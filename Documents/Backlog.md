@@ -49,5 +49,5 @@
     <li>Le joueur peut sauvegarder des parties</li>
     <li>Le joueur peut charger des sauvegardes</li>
     <li>Le joueur peut relancer une partie</li>
-    <il>Le joueur peut gérer l'inventaire de son héros</il>
+    <li>Le joueur peut gérer l'inventaire de son héros</li>
   </ul>
