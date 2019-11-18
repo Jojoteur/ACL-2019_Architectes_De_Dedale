@@ -2,7 +2,6 @@
 
 <ul>
   <li>Déplacer le héros sur un quadrillage</li>
-  <li>Gagner lorsque le héros ramasse le trésor</li>
   <li>Changer de salle du labyrinthe en traversant les portes</li>
   <li>Tomber dans des pièges pour perdre des points de vie</li>
   <li>Ramasser des objets pour regagner des points de vie</li>  
