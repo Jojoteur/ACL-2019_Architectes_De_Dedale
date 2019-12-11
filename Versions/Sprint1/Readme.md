@@ -14,3 +14,9 @@ La compilation peut être lancée par la commande Maven : <code>clean compile as
 
 <h2>Fonctionnalités non réalisées et prévues dans le backlog du sprint</h2>
 Aucune
+
+
+<h2>Dépendances</h2>
+<ul>
+  <li>json-simple (1.1.1). Utilisation pour le système de sauvegarde qui est déjà implémenté, mais pas encore disponible depuis le menu.</li>
+</ul>
