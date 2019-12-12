@@ -12,6 +12,7 @@ Toutes les attentes du backlog pour le sprint 1 ont été réalisées sans aucun
   <li>Gain de vie lors du passage sur un coeur</li>
 </ul>
 
+<p style="background-color:Tomato;">Lorem ipsum...</p>
 <h2>Fonctionnalités non réalisées et prévues dans le backlog du sprint</h2>
 Aucune
 
