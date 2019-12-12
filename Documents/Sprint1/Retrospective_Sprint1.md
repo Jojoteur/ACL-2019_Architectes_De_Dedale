@@ -1,7 +1,7 @@
-<h1>Compte-Rendu Sprint 1</h1>
+<h1>Rétrospective Sprint 1</h1>
 
-Architecture par défaut d'un projet <b>Maven</b>.  
-La création du fichier .jar peut être lancée par la commande Maven : <code>clean compile assembly:single</code>.  
+<p style="background-color:DodgerBlue;"> Toutes les attentes du backlog pour le sprint 1 ont été réalisées sans aucun problème. Les diagrammes de classes et de séquences doivent être modifiés pour correspondre aux nouvelles nomenclatures des fonctions utilisées. </p> 
+
 
 <h2>Fonctionnalités réalisées</h2>
 <ul>
@@ -16,7 +16,3 @@ La création du fichier .jar peut être lancée par la commande Maven : <code>cl
 Aucune
 
 
-<h2>Dépendances</h2>
-<ul>
-  <li>json-simple (1.1.1). Utilisation pour le système de sauvegarde qui est déjà implémenté, mais pas encore disponible depuis le menu.</li>
-</ul>
