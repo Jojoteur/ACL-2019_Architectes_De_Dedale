@@ -1,8 +1,5 @@
 <h1>Sprint 1</h1>
 
-Architecture par défaut d'un projet <b>Maven</b>.  
-La création du fichier .jar peut être lancée par la commande Maven : <code>clean compile assembly:single</code>.  
-
 <h2>Fonctionnalités réalisées</h2>
 <ul>
   <li>Déplacement du héros</li>
