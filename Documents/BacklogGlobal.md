@@ -4,23 +4,23 @@
   
   <h2>HEROS</h2>
   <ul>
-    <li>Déplacer le héros sur un quadrillage</li>
+    <li><strike>Déplacer le héros sur un quadrillage</strike></li>
     <li>Gagner lorsque le héros bat le boss</li>
     <li>Gestion des niveaux du héros</li>
     <li>Le héros peut ramasser des objets sur le sol</li>
     <li>Le héros a un inventaire</li>
-     <li>Le héros peut récupérer des points de vie avec des objets</li>
+    <li><strike>Le héros peut récupérer des points de vie avec des objets</strike></li>
     <li>Le héros peut changer d'étage en passant sur un escalier</li>
-    <li>Le héros peut changer de salle en passant par une porte</li>
+    <li><strike>Le héros peut changer de salle en passant par une porte</strike></li>
   </ul>
   
   <h2>LABYRINTHE</h2>
   <ul>
     <li>Le labyrinthe est construit en plusieurs étages</li>
-    <li>Les étages sont construits avec des salles</li>
-    <li>Tomber dans des pièges pour perdre des points de vie</li>
+    <li><strike>Les étages sont construits avec des salles</strike></li>
+    <li><strike>Tomber dans des pièges pour perdre des points de vie</strike></li>
     <li>Différents niveaux de difficulté</li>
-  <li>Génération d'items sur le sol du labyrinthe</li>
+    <li><strike>Génération d'items sur le sol du labyrinthe</strike></li>
   </ul>
 
   <h2>MONSTRE</h2>
@@ -43,7 +43,7 @@
 
   <h2>JOUEUR</h2>
   <ul>
-    <li>Le joueur peut lancer une partie</li>
+    <li><strike>Le joueur peut lancer une partie</strike></li>
     <li>Le joueur peut quitter/abandonner la partie</li>
     <li>Le joueur peut quitter le jeu</li>
     <li>Le joueur peut sauvegarder des parties</li>
