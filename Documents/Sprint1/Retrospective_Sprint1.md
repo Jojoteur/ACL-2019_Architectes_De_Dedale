@@ -1,6 +1,6 @@
 <h1>Rétrospective Sprint 1</h1>
 
-Toutes les attentes du backlog pour le sprint 1 ont été réalisées sans aucun problème. Les diagrammes de classes et de séquences doivent être modifiés pour correspondre aux nouvelles nomenclatures des fonctions utilisées.
+<div class="text-white bg:#ff6347;">Toutes les attentes du backlog pour le sprint 1 ont été réalisées sans aucun problème. Les diagrammes de classes et de séquences doivent être modifiés pour correspondre aux nouvelles nomenclatures des fonctions utilisées.</div>
 
 
 <h2>Fonctionnalités réalisées</h2>
