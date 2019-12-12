@@ -7,3 +7,8 @@
   <li>Pichon Théophile</li>
   <li>Sturtzer Guillaume</li>
 </ul>
+
+
+Architecture par défaut d'un projet <b>Maven</b>.  
+La création du fichier .jar peut être lancée par la commande Maven : <code>clean compile assembly:single</code>.
+Il faut éxecuter la classe start.Main pour lancer l'application.
