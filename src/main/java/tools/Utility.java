@@ -32,7 +32,7 @@ public class Utility {
     }
 
     public static Image resizeImage(String filename, int newWidth, int newHeight) throws IOException {
-		InputStream resource = Utility.class.getResourceAsStream("/"+filename);
+		InputStream resource = Utility.class.getResourceAsStream("/textures/"+filename);
 		
 		if(resource == null)
 		{

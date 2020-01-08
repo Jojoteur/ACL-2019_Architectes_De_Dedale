@@ -17,8 +17,9 @@
   
   <h2>JOUEUR</h2>
   <ul>
-    <li>Le joueur peut quitter/abandonner la partie</li>
-    <li>Le joueur peut quitter le jeu</li>
+    <li><s>Le joueur peut quitter la partie</s></li>
+    <li><s>Le joueur peut quitter le jeu</s></li>
+    <li><s>Le joueur peut mettre pause</s></li>
     <li>Le joueur peut sauvegarder des parties</li>
     <li>Le joueur peut charger des sauvegardes</li>
     <li>Le joueur peut relancer une partie</li>

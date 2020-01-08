@@ -20,6 +20,7 @@ public class LabyrinthGame implements Game{
 		this.roomHeight = roomHeight;
 		rooms = new Hashtable<Integer, Room>();
 		doors = new Hashtable<Integer, Door>();
+		hero = new Hero(1, 1);
 	}
 	
 	public Hero getHero() {
