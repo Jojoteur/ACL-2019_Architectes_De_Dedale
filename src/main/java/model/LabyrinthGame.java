@@ -6,7 +6,6 @@ import org.json.simple.JSONObject;
 
 import engine.Command;
 import engine.Game;
-import tools.Utility;
 
 public class LabyrinthGame implements Game{
 	private int roomWidth, roomHeight;
@@ -67,7 +66,7 @@ public class LabyrinthGame implements Game{
 	}
 		
 	@SuppressWarnings("unchecked")
-	public void saveGame(String name) {
+	public JSONObject getJSON(String name) {
 		JSONObject save = new JSONObject();
 		
 		save.put("hero", hero.save());
@@ -86,16 +85,12 @@ public class LabyrinthGame implements Game{
         save.put("activeRoom", activeRoom.getId());
         save.put("roomWidth", roomWidth);
         save.put("roomHeight", roomHeight);
-        JSONObject saves = Utility.openJSON("saves.json");
-        saves.put(name, save);
-        
-		Utility.saveJSON(saves, "saves.json");
+
+		return save;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void loadGame(String name) throws IOException {
-        JSONObject savesJSON = Utility.openJSON("saves.json");
-        JSONObject saveJSON = (JSONObject) savesJSON.get(name);        
+	public void loadJSON(JSONObject saveJSON) {  
         JSONObject roomsJSON = (JSONObject) saveJSON.get("rooms");
         JSONObject doorsJSON = (JSONObject) saveJSON.get("doors");
         JSONObject heroJSON = (JSONObject) saveJSON.get("hero");
@@ -106,22 +101,52 @@ public class LabyrinthGame implements Game{
 		);
 		
 		hero.setHealthPoints(Math.toIntExact((Long) heroJSON.get("healthPoints")));
-        
+		hero.setCooldownAttack(Math.toIntExact((Long) heroJSON.get("cooldownAttack")));
+		hero.setCooldownMove(Math.toIntExact((Long) heroJSON.get("cooldownMove")));
+		hero.setDirection(Command.valueOf((String) heroJSON.get("direction")));
+
         roomsJSON.forEach((k, v) -> { 
         	JSONObject j = (JSONObject) v;
         	int id = Math.toIntExact((Long) j.get("id"));
         	Room room = new Room(id, Math.toIntExact((Long) j.get("width")), Math.toIntExact((Long) j.get("height")));
-        	rooms.put(id, room);
-        	
+			rooms.put(id, room);
+			
+			JSONObject monsters = (JSONObject) j.get("monsters");
+			
+			monsters.forEach((k2, v2) -> { 
+            	JSONObject j2 = (JSONObject) v2;
+            	String category = (String) j2.get("category");
+            	int x = Math.toIntExact((Long) j2.get("x"));
+            	int y = Math.toIntExact((Long) j2.get("y"));
+            	Monster monster = null;
+            	switch(category) {
+            		case "goblin":
+						monster = new Goblin(x,y);
+            			break;
+            		case "skeleton":
+            			monster = new Skeleton(x,y);
+            			break;
+            		default:
+            			break;
+				}
+				
+				monster.setHealthPoints(Math.toIntExact((Long) j2.get("healthPoints")));
+				monster.setCooldownAttack(Math.toIntExact((Long) j2.get("cooldownAttack")));
+				monster.setCooldownMove(Math.toIntExact((Long) j2.get("cooldownMove")));
+				monster.setDirection(Command.valueOf((String) j2.get("direction")));
+
+				room.addMonster(monster);
+            });
+
         	JSONObject groundItems = (JSONObject) j.get("groundItems");
         	
         	groundItems.forEach((k2, v2) -> { 
             	JSONObject j2 = (JSONObject) v2;
-            	String type = (String) j2.get("type");
+            	String category = (String) j2.get("category");
             	int x = Math.toIntExact((Long) j2.get("x"));
             	int y = Math.toIntExact((Long) j2.get("y"));
             	
-            	switch(type) {
+            	switch(category) {
             		case "wall":
             			room.addGroundItem(new Wall(x,y));
             			break;

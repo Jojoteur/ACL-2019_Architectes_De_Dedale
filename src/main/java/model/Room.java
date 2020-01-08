@@ -123,10 +123,15 @@ public class Room {
 		JSONObject groundItems = new JSONObject();
         this.groundItems.forEach((k, v) -> { 
         	groundItems.put(k, v.save());
+		});
+		
+		JSONObject monsters = new JSONObject();
+        this.monsters.forEach((k, v) -> { 
+        	monsters.put(k, v.save());
         });
         
         j.put("groundItems", groundItems);
-        
+        j.put("monsters", monsters);
 		return j;
 	}
 	

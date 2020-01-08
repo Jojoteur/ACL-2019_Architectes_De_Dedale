@@ -52,6 +52,18 @@ public abstract class Character {
 		this.healthPoints = healthPoints;
 	}
 
+	public void setCooldownMove(int cooldownMove) {
+		this.cooldownMove = cooldownMove;
+	}
+
+	public void setCooldownAttack(int cooldownAttack) {
+		this.cooldownAttack = cooldownAttack;
+	}
+
+	public void setDirection(Command direction) {
+		this.direction = direction;
+	}
+
 	public Image getTexture() {
 		return Texture.get(category, direction);
 	}
@@ -114,7 +126,11 @@ public abstract class Character {
 		j.put("x", x);
 		j.put("y", y);
 		j.put("healthPoints", healthPoints);
-		
+		j.put("attackPoints", attackPoints);
+		j.put("cooldownMove", cooldownMove);
+		j.put("cooldownAttack", cooldownAttack);
+		j.put("category", category);
+		j.put("direction", direction.toString());
 		return j;
 	}
 }

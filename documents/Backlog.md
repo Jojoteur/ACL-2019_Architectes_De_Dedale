@@ -1,4 +1,4 @@
-<h1>Backlog Sprint 2<h1>
+<h1>Backlog Sprint 2</h1>
 
   <h2>MONSTRE</h2>
   <ul>
@@ -20,7 +20,7 @@
     <li><s>Le joueur peut quitter la partie</s></li>
     <li><s>Le joueur peut quitter le jeu</s></li>
     <li><s>Le joueur peut mettre pause</s></li>
-    <li>Le joueur peut sauvegarder des parties</li>
-    <li>Le joueur peut charger des sauvegardes</li>
+    <li><s>Le joueur peut sauvegarder des parties</s></li>
+    <li><s>Le joueur peut charger des sauvegardes</s></li>
     <li>Le joueur peut relancer une partie</li>
   </ul>
