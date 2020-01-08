@@ -89,8 +89,13 @@ public class LabyrinthGame implements Game{
 	}
 
 	@Override
-	public boolean isFinished() {
+	public boolean isFinishedVictory() {
 		return hero.getVictory();
+	}
+	
+	@Override
+	public boolean isFinishedDead() {
+		return (getHero().getHealthPoints() == 0);
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -201,7 +206,7 @@ public class LabyrinthGame implements Game{
 	}
 	
 	public void initFortTest() throws IOException {
-        this.hero = new Hero(1, 1, 10, Img.resize("hero.jpg", 50, 50));
+        this.hero = new Hero(1, 1, 1, Img.resize("hero.jpg", 50, 50));
         Image wallTexture = Img.resize("wall.jpg", 50, 50);
         
         int nbRooms = 4;
@@ -231,7 +236,7 @@ public class LabyrinthGame implements Game{
 		rooms[1].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
 		rooms[2].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
 		doors.put(1, door);
-		door = new Door(2, roomWidth - 1, 5, Command.RIGHT, rooms[2], 0, 8, Command.LEFT, rooms[3]);
+		door = new Door(2, roomWidth - 1, 5, Command.RIGHT, rooms[2], 0, 5, Command.LEFT, rooms[3]);
 		rooms[2].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
 		rooms[3].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
 		doors.put(2, door);

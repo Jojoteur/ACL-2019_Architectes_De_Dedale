@@ -11,16 +11,18 @@ import tools.Img;
 public class LabyrinthPainter implements GamePainter{
 
 	private Image defaultTexture;
-	private int windowHeight, windowWidth, fieldSize;
+	private int windowHeight, windowWidth, roomHeight, roomWidth, fieldSize;
 	
 	private LabyrinthGame labyrinthGame; 
 	
 	public LabyrinthPainter(LabyrinthGame labyrinthGame, int fieldSize) throws IOException {
 		this.labyrinthGame = labyrinthGame;
+		roomHeight = labyrinthGame.getRoomHeight();
+		roomWidth = labyrinthGame.getRoomWidth();
 		this.fieldSize = fieldSize;
 		
-		windowHeight = labyrinthGame.getRoomHeight() * fieldSize;
-		windowWidth = labyrinthGame.getRoomWidth() * fieldSize;
+		windowHeight = roomHeight * fieldSize;
+		windowWidth = roomWidth * fieldSize;
 		
 		defaultTexture = Img.resize("default.jpg", fieldSize, fieldSize);
 	}
@@ -30,9 +32,9 @@ public class LabyrinthPainter implements GamePainter{
 		Graphics2D crayon = (Graphics2D) image.getGraphics();
 		Hero hero = labyrinthGame.getHero();
 		Room room = labyrinthGame.getActiveRoom();
-
-		for(int x=0; x<labyrinthGame.getRoomWidth(); x++) {
-			for(int y=0; y<labyrinthGame.getRoomHeight(); y++) {
+		
+		for(int x=0; x<roomWidth; x++) {
+			for(int y=0; y<roomHeight; y++) {
 				if(room.checkGroundItem(x, y)) {
 					crayon.drawImage(room.getGroundItem(x, y).getTexture(), x*fieldSize, y*fieldSize, null);
 				}

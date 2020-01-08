@@ -5,14 +5,17 @@ import java.awt.Image;
 import org.json.simple.JSONObject;
 
 public abstract class Character {
+	
 	protected int x, y, healthPoints;
 	protected Image texture;
+	protected String categorie;
 	
-	public Character(int x, int y, int healthPoints, Image texture) {
+	public Character(String categorie, int x, int y, int healthPoints, Image texture) {
 		this.x = x;
 		this.y = y;
 		this.healthPoints = healthPoints;
 		this.texture = texture;
+		this.categorie = categorie;
 	}
 
 	public int getX() {
@@ -42,6 +45,8 @@ public abstract class Character {
 	public Image getTexture() {
 		return texture;
 	}
+	
+	public abstract boolean canPassThrough();
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject save() {

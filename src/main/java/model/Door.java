@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.image.BufferedImage;
+
 import org.json.simple.JSONObject;
 
 import engine.Command;
@@ -8,7 +10,8 @@ public class Door{
 	private int id,x1,y1,x2,y2;
 	private Room room1, room2;
 	private Command cmd1, cmd2;
-
+	private BufferedImage texture;
+	
 	public Door(int id, int x1, int y1, Command cmd1, Room room1, int x2, int y2, Command cmd2, Room room2) {
 		this.id = id;
 		this.x1 = x1;
@@ -55,6 +58,10 @@ public class Door{
 
 	public Room getRoom2() {
 		return room2;
+	}
+	
+	public BufferedImage getTexture() {
+		return texture;
 	}
 	
 	@SuppressWarnings("unchecked")

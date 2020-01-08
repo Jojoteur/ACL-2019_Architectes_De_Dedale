@@ -5,6 +5,7 @@ import java.awt.Image;
 import org.json.simple.JSONObject;
 
 public abstract class GroundItem {
+	
 	private String type;
 	private int x,y;
 	private Image texture;

@@ -27,17 +27,18 @@ public class Application {
 	private Timer timer;
 	private LabyrinthGame game;
 	private LabyrinthController controller;	
-	private JLabel labelVictory, labelHealthPoints;
+	private JLabel endText, header;
 	private int windowHeight, windowWidth;
+	private int roomWidth, roomHeight, fieldSize;
 	public Application() throws IOException, InterruptedException {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		contentPane = new JPanel();
 		frame.setContentPane(contentPane);
 		
-		int roomWidth = 15;
-		int roomHeight = 10;
-		int fieldSize = 50;
+		roomWidth = 15;
+		roomHeight = 10;
+		fieldSize = 50;
 		windowWidth = (int) (fieldSize * roomWidth);
 		windowHeight = (int) (fieldSize * roomHeight + 50);
 		
@@ -55,19 +56,29 @@ public class Application {
 		timer.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evt) {
 		        engine.run();
-		        labelHealthPoints.setText("Health points : "+game.getHero().getHealthPoints());
-		        if(game.isFinished()) {
-		        	timer.stop();
-			    	JPanel contentPane = (JPanel) frame.getContentPane();
-			    	contentPane.remove(panelGame);
-			    	contentPane.add(panelMenu);
-			    	contentPane.removeKeyListener(controller);
-			    	labelVictory.setText("Victory");
-			        frame.pack();
-			        frame.revalidate();
-			        frame.repaint();
-		        }
-		    }
+		        header.setText("Health points : "+game.getHero().getHealthPoints());
+				if (game.isFinishedVictory() || game.isFinishedDead()) {
+					timer.stop();
+					JPanel contentPane = (JPanel) frame.getContentPane();
+					contentPane.remove(panelGame);
+					contentPane.add(panelMenu);
+					contentPane.removeKeyListener(controller);
+					
+					if(game.isFinishedVictory()) {
+						endText.setText("VICTORY");
+						frame.pack();
+						frame.revalidate();
+						frame.repaint();
+					}
+					else {
+						endText.setText("GAME OVER");
+						frame.pack();
+						frame.revalidate();
+						frame.repaint();
+					}
+
+				}
+			}
 		});
 		
 		initPanelGame();
@@ -90,10 +101,10 @@ public class Application {
 		panelNorth.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		panelMenu.setPreferredSize(new Dimension(windowWidth, windowHeight));
 		
-		labelVictory = new JLabel("");
+		endText = new JLabel("");
 		
 		panelNorth.setPreferredSize(new Dimension(windowWidth, 50));
-		panelNorth.add(labelVictory);
+		panelNorth.add(endText);
 		panelCenter.add(start);
 		panelMenu.add(panelNorth, BorderLayout.NORTH);
 		panelMenu.add(panelCenter, BorderLayout.CENTER);
@@ -129,10 +140,10 @@ public class Application {
 
 		panelGame.setPreferredSize(new Dimension(windowWidth, windowHeight));
 		panelNorth.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		labelHealthPoints = new JLabel("Health points : "+game.getHero().getHealthPoints());
+		header = new JLabel("Health points : "+game.getHero().getHealthPoints());
 		
 		panelNorth.setPreferredSize(new Dimension(windowWidth, 50));
-		panelNorth.add(labelHealthPoints);
+		panelNorth.add(header);
 		panelCenter.add(engine.getGui().getPanel());
 
 		panelGame.add(panelNorth, BorderLayout.NORTH);
