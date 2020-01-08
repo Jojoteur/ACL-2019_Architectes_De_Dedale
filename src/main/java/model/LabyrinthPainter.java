@@ -46,13 +46,11 @@ public class LabyrinthPainter implements GamePainter{
 
 	@Override
 	public int getWidth() {
-		// TODO Auto-generated method stub
 		return windowWidth;
 	}
 
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
 		return windowHeight;
 	}
 
