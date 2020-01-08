@@ -6,15 +6,13 @@ import org.json.simple.JSONObject;
 
 public abstract class GroundItem {
 	
-	private String type;
+	private String category;
 	private int x,y;
-	private Image texture;
 	
-	public GroundItem(String type, int x, int y, Image texture) {
-		this.texture = texture;
+	public GroundItem(String category, int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.type = type;
+		this.category = category;
 	}
 	
 	public int getX() {
@@ -26,7 +24,7 @@ public abstract class GroundItem {
 	}
 	
 	public Image getTexture() {
-		return this.texture;
+		return Texture.get(category);
 	}
 	
 	public abstract boolean canPassThrough();
@@ -35,7 +33,7 @@ public abstract class GroundItem {
 	@SuppressWarnings("unchecked")
 	public JSONObject save() {
 		JSONObject j = new JSONObject();
-		j.put("type", type);
+		j.put("category", category);
 		j.put("x", x);
 		j.put("y", y);
 		return j;

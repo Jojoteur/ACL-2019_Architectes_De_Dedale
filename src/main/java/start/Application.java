@@ -18,6 +18,7 @@ import engine.GameEngine;
 import model.LabyrinthController;
 import model.LabyrinthGame;
 import model.LabyrinthPainter;
+import model.Texture;
 
 public class Application {
 	private JFrame frame;
@@ -42,7 +43,7 @@ public class Application {
 		windowWidth = (int) (fieldSize * roomWidth);
 		windowHeight = (int) (fieldSize * roomHeight + 50);
 		
-		
+		Texture.initTextures(fieldSize);
 		game = new LabyrinthGame(roomWidth, roomHeight);
 		game.initFortTest();
 		//game.loadGame("pouuuuuuu");

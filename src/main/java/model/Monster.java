@@ -1,20 +1,19 @@
 package model;
 
-import java.awt.Image;
 import engine.Command;
 
 
 public abstract class Monster extends Character{
 	
-	private int categorie;
+	private String category;
 	private Command cmd;
 	
-	public Monster (String categorie, int x, int y, int healthPoints, Image texture) {
-		super(categorie, x, y, healthPoints, texture);		
+	public Monster (String category, int x, int y, int healthPoints) {
+		super(category, x, y, healthPoints);		
 	}
 	
-	public int getCategorie() {
-		return this.categorie;
+	public String getcategory() {
+		return this.category;
 	}
 
 	@Override

@@ -11,7 +11,7 @@
   <h2>ATTAQUES</h2>
   <ul>
     <li>Le héros perd des points de vie lorsqu'il est touché</li>
-    <li>Le héros meurt quand ses points de vie tombent à zéro</li>
+    <li><s>Le héros meurt quand ses points de vie tombent à zéro</s></li>
     <li>Le héros peut attaquer les ennemis qui sont adjacents à lui</li>
   </ul>
   

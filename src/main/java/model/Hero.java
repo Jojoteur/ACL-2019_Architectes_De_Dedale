@@ -1,13 +1,11 @@
 package model;
 
-import java.awt.Image;
-
 public class Hero extends Character{
 	
 	private boolean victory;
 	
-	public Hero(int x, int y, int healthPoint, Image texture) {
-		super("hero", x, y, healthPoint, texture);
+	public Hero(int x, int y, int healthPoint) {
+		super("hero", x, y, healthPoint);
 		victory = false;
 	}
 	

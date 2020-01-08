@@ -1,14 +1,11 @@
 package model;
 
-
-import java.awt.Image;
 import java.io.IOException;
 import java.util.Hashtable;
 import org.json.simple.JSONObject;
 
 import engine.Command;
 import engine.Game;
-import tools.Img;
 import tools.JSON;
 
 public class LabyrinthGame implements Game{
@@ -132,16 +129,10 @@ public class LabyrinthGame implements Game{
         JSONObject doorsJSON = (JSONObject) saveJSON.get("doors");
         JSONObject heroJSON = (JSONObject) saveJSON.get("hero");
         
-		Image heroTexture = Img.resize("hero.jpg", 50, 50);
-		Image wallTexture = Img.resize("wall.jpg", 50, 50);
-		Image trapTexture = Img.resize("trap.jpg", 50, 50);
-		Image healObjectTexture = Img.resize("healObject.jpg", 50, 50);
-		Image treasureTexture = Img.resize("treasure.jpg", 50, 50);
         hero = new Hero(
         		Math.toIntExact((Long) heroJSON.get("x")), 
         		Math.toIntExact((Long) heroJSON.get("y")), 
-        		Math.toIntExact((Long) heroJSON.get("healthPoints")),
-        		heroTexture
+        		Math.toIntExact((Long) heroJSON.get("healthPoints"))
         );
         
         roomsJSON.forEach((k, v) -> { 
@@ -160,16 +151,16 @@ public class LabyrinthGame implements Game{
             	
             	switch(type) {
             		case "wall":
-            			room.addGroundItem(new Wall(x,y, wallTexture));
+            			room.addGroundItem(new Wall(x,y));
             			break;
             		case "trap":
-            			room.addGroundItem(new Trap(x,y, trapTexture));
+            			room.addGroundItem(new Trap(x,y));
             			break;
             		case "healthObject":
-            			room.addGroundItem(new HealObject(x,y, healObjectTexture));
+            			room.addGroundItem(new HealObject(x,y));
             			break;
             		case "treasure":
-            			room.addGroundItem(new Treasure(x,y, treasureTexture));
+            			room.addGroundItem(new Treasure(x,y));
             			break;
             		default:
             			break;
@@ -206,8 +197,7 @@ public class LabyrinthGame implements Game{
 	}
 	
 	public void initFortTest() throws IOException {
-        this.hero = new Hero(1, 1, 1, Img.resize("hero.jpg", 50, 50));
-        Image wallTexture = Img.resize("wall.jpg", 50, 50);
+        this.hero = new Hero(1, 1, 1);
         
         int nbRooms = 4;
 		Room[] rooms = new Room[nbRooms];
@@ -218,7 +208,7 @@ public class LabyrinthGame implements Game{
 			for(int x = 0; x < roomWidth; x++) {
 				for(int y = 0; y < roomHeight; y++) {
 					if(x == 0 || x == roomWidth - 1 || y == 0 || y == roomHeight - 1) {
-						rooms[i].addGroundItem(new Wall(x,y, wallTexture));
+						rooms[i].addGroundItem(new Wall(x,y));
 					}
 				}
 			}
@@ -241,14 +231,10 @@ public class LabyrinthGame implements Game{
 		rooms[3].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
 		doors.put(2, door);
 		
+		rooms[0].addGroundItem(new Trap(5,5));
+		rooms[0].addGroundItem(new HealObject(5,6));
 		
-		Image trapTexture = Img.resize("trap.jpg", 50, 50);
-		Image healObjectTexture = Img.resize("healObject.jpg", 50, 50);
-		Image treasureTexture = Img.resize("treasure.jpg", 50, 50);
-		rooms[0].addGroundItem(new Trap(5,5,trapTexture));
-		rooms[0].addGroundItem(new HealObject(5,6,healObjectTexture));
-		
-		rooms[3].addGroundItem(new Treasure(5,5,treasureTexture));
+		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
 	}
 	
