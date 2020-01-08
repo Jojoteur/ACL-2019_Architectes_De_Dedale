@@ -4,6 +4,8 @@ import java.awt.Image;
 
 import org.json.simple.JSONObject;
 
+import engine.Command;
+
 public abstract class Character {
 	
 	protected int x, y, healthPoints;
@@ -42,6 +44,34 @@ public abstract class Character {
 
 	public Image getTexture() {
 		return Texture.get(category);
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void move(Command cmd, Room activeRoom)
+	{
+		int newX = this.x, newY = this.y;
+
+		if(cmd == Command.DOWN) {
+			newY += (this.y < activeRoom.getHeight() - 1) ? 1 : 0;
+		}
+		else if(cmd == Command.UP) {
+			newY += (this.y == 0) ? 0 : -1;
+		}
+		else if(cmd == Command.LEFT) {
+			newX += (this.x == 0) ? 0 : -1;
+		}
+		else if(cmd == Command.RIGHT) {
+			newX += (this.x < activeRoom.getWidth() - 1) ? 1 : 0;
+		}
+		
+		if(!activeRoom.checkGroundItem(newX, newY)
+		|| activeRoom.getGroundItem(newX, newY).canPassThrough()) {
+			this.x = newX;
+			this.y = newY;
+		}
 	}
 	
 	public abstract boolean canPassThrough();

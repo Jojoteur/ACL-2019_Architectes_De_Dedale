@@ -18,6 +18,14 @@ public class Room {
 		doors = new Hashtable<Integer,Door>();
 		monsters = new Hashtable<Integer,Monster>();
 	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
 	
 	public int getId() {
 		return this.id;

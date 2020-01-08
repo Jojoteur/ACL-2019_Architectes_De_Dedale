@@ -40,49 +40,16 @@ public class LabyrinthGame implements Game{
 		
 	@Override
 	public void update(Command cmd) {
-		int x = hero.getX();
-		int y = hero.getY();
-		
-		if(activeRoom.checkDoor(x, y)) {
-			Door door = activeRoom.getDoor(x, y);
-			if(cmd == door.getCmd1() && door.getRoom1().getId() == activeRoom.getId() 
-				|| cmd == door.getCmd2() && door.getRoom2().getId() == activeRoom.getId() ) {
-				changeRoom(door);
-				return;
-			}
-		}
-		
-		if(cmd == Command.DOWN) {
-			y = (y < roomHeight - 1) ? y+1 : y;
-		}
-		else if(cmd == Command.UP) {
-			y = (y == 0) ? 0 : y-1;
-		}
-		else if(cmd == Command.LEFT) {
-			x = (x == 0) ? 0 : x-1;
-		}
-		else if(cmd == Command.RIGHT) {
-			x = (x < roomWidth - 1) ? x+1 : x;
-		}
-		
-		boolean canMove = true;
-		
-		if(activeRoom.checkGroundItem(x, y)) {
-			GroundItem groundItem = activeRoom.getGroundItem(x, y);
-			if(!groundItem.canPassThrough()) {
-				canMove = false;
-			}
-			else {
-				groundItem.applyEffects(hero);
-				activeRoom.removeGroundItems(x, y);
-			}
+		Door door = hero.getDoor(cmd, activeRoom);
+
+		if(door != null)
+		{
+			changeRoom(door);
+			return;
 		}
 
-
-		if(canMove) {
-			hero.setX(x);
-			hero.setY(y);
-		}
+		hero.move(cmd, activeRoom);
+		hero.pickGroundItem(activeRoom);
 	}
 
 	@Override
