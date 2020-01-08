@@ -6,8 +6,8 @@ public class Hero extends Character {
 	
 	private boolean victory;
 	
-	public Hero(int x, int y, int healthPoint) {
-		super("hero", x, y, healthPoint);
+	public Hero(int x, int y) {
+		super("hero", x, y, 10, 1, 1, 2);
 		victory = false;
 	}
 	
@@ -17,11 +17,6 @@ public class Hero extends Character {
 	
 	public boolean getVictory() {
 		return victory;
-	}
-
-	@Override
-	public boolean canPassThrough() {
-		return false;
 	}
 
 	public void pickGroundItem(Room activeRoom) {
@@ -44,6 +39,44 @@ public class Hero extends Character {
 		return null;
 	}
 
+	@Override
+	public void attack(Command cmd, Room activeRoom, Hero hero) {
+		if(!cmd.equals(Command.SPACE)) {
+			return;
+		}
+		else if(cooldownAttack > 0) {
+			cooldownAttack--;
+			return;
+		}
+		
+		cooldownAttack = cooldownAttackInit;
 
-	
+		int targetX = x;
+		int targetY = y;
+		
+		switch(direction) {
+			case LEFT:
+				targetX--;
+				break;
+			case RIGHT:
+				targetX++;
+				break;
+			case UP:
+				targetY--;
+				break;
+			case DOWN:
+				targetY++;
+				break;
+			default:
+				break;
+		}
+
+		if(activeRoom.checkMonster(targetX, targetY)) {
+			Monster monster = activeRoom.getMonster(targetX, targetY);
+			monster.addHealthPoints(-attackPoints);
+			if(monster.getHealthPoints() <= 0) {
+				activeRoom.removeMonster(targetX, targetY);
+			}
+		}
+	}
 }

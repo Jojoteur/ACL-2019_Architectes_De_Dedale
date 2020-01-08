@@ -5,13 +5,44 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.awt.Image;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.imageio.ImageIO;
 
-public class JSON {
+import engine.Command;
+
+public class Utility {	
+    public static Command determineDirection(int xStart, int yStart, int xEnd, int yEnd) {
+        int dX = xEnd - xStart;
+        int dY = yEnd - yStart;
+        
+        // S'il faut bouger sur l'axe horizontal.
+        if(Math.abs(dX) >= Math.abs(dY)) {
+            return (dX > 0) ? Command.RIGHT : Command.LEFT;
+        }
+        // S'il faut bouger sur l'axe vertical
+        else {
+            return (dY > 0) ? Command.DOWN : Command.UP;
+        }
+    }
+
+    public static Image resizeImage(String filename, int newWidth, int newHeight) throws IOException {
+		InputStream resource = Utility.class.getResourceAsStream("/"+filename);
+		
+		if(resource == null)
+		{
+			return null;
+		}
+
+		Image img = ImageIO.read(resource).getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+		return img;
+    }
+    
     public static void saveJSON(JSONObject json, String path) {
         File file = new File(path);
         FileWriter fr = null;

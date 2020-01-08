@@ -45,8 +45,29 @@ public class Room {
 		return monsters.containsKey(hashXY(x,y));
 	}
 	
-	public Monster getMonster(int x, int y){
+	public Monster getMonster(int x, int y) {
 		return monsters.get(hashXY(x,y));
+	}
+
+	public Room removeMonster(int x, int y) {
+		monsters.remove(hashXY(x,y));
+		return this;
+	}
+
+	public Hashtable<Integer,Monster> getMonsters() {
+		return monsters;
+	}
+
+	public void moveAndAttackMonsters(Hero hero) {
+		Hashtable<Integer,Monster> newMonsters = new Hashtable<Integer,Monster>();
+
+		this.monsters.forEach((k, monster) -> {
+			monster.move(this, hero);
+			newMonsters.put(hashXY(monster.getX(),monster.getY()), monster);
+			monster.attack(null, this, hero);
+		});
+		
+		this.monsters = newMonsters;
 	}
 	
 	//Methodes pour les doors

@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 import engine.Command;
 import engine.Game;
-import tools.JSON;
+import tools.Utility;
 
 public class LabyrinthGame implements Game{
 	private int roomWidth, roomHeight;
@@ -48,8 +48,11 @@ public class LabyrinthGame implements Game{
 			return;
 		}
 
-		hero.move(cmd, activeRoom);
+		hero.move(cmd, activeRoom, hero);
 		hero.pickGroundItem(activeRoom);
+
+		activeRoom.moveAndAttackMonsters(hero);
+		hero.attack(cmd, activeRoom, hero);
 	}
 
 	@Override
@@ -82,15 +85,15 @@ public class LabyrinthGame implements Game{
         save.put("activeRoom", activeRoom.getId());
         save.put("roomWidth", roomWidth);
         save.put("roomHeight", roomHeight);
-        JSONObject saves = JSON.openJSON("saves.json");
+        JSONObject saves = Utility.openJSON("saves.json");
         saves.put(name, save);
         
-		JSON.saveJSON(saves, "saves.json");
+		Utility.saveJSON(saves, "saves.json");
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void loadGame(String name) throws IOException {
-        JSONObject savesJSON = JSON.openJSON("saves.json");
+        JSONObject savesJSON = Utility.openJSON("saves.json");
         JSONObject saveJSON = (JSONObject) savesJSON.get(name);        
         JSONObject roomsJSON = (JSONObject) saveJSON.get("rooms");
         JSONObject doorsJSON = (JSONObject) saveJSON.get("doors");
@@ -98,9 +101,10 @@ public class LabyrinthGame implements Game{
         
         hero = new Hero(
         		Math.toIntExact((Long) heroJSON.get("x")), 
-        		Math.toIntExact((Long) heroJSON.get("y")), 
-        		Math.toIntExact((Long) heroJSON.get("healthPoints"))
-        );
+        		Math.toIntExact((Long) heroJSON.get("y"))
+		);
+		
+		hero.setHealthPoints(Math.toIntExact((Long) heroJSON.get("healthPoints")));
         
         roomsJSON.forEach((k, v) -> { 
         	JSONObject j = (JSONObject) v;
@@ -164,7 +168,7 @@ public class LabyrinthGame implements Game{
 	}
 	
 	public void initFortTest() throws IOException {
-        this.hero = new Hero(1, 1, 1);
+        this.hero = new Hero(1, 1);
         
         int nbRooms = 4;
 		Room[] rooms = new Room[nbRooms];
@@ -203,6 +207,7 @@ public class LabyrinthGame implements Game{
 		
 		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
+		activeRoom.addMonster(new Goblin(7,1));
 	}
 	
 	private void changeRoom(Door door) {

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import engine.GamePainter;
-import tools.Img;
+import tools.Utility;
 
 public class LabyrinthPainter implements GamePainter{
 
@@ -24,7 +24,7 @@ public class LabyrinthPainter implements GamePainter{
 		windowHeight = roomHeight * fieldSize;
 		windowWidth = roomWidth * fieldSize;
 		
-		defaultTexture = Img.resize("default.jpg", fieldSize, fieldSize);
+		defaultTexture = Utility.resizeImage("default.jpg", fieldSize, fieldSize);
 	}
 	
 	@Override
@@ -35,9 +35,12 @@ public class LabyrinthPainter implements GamePainter{
 		
 		for(int x=0; x<roomWidth; x++) {
 			for(int y=0; y<roomHeight; y++) {
-				if(room.checkGroundItem(x, y)) {
-					crayon.drawImage(room.getGroundItem(x, y).getTexture(), x*fieldSize, y*fieldSize, null);
+				if(room.checkMonster(x, y)){
+					crayon.drawImage(room.getMonster(x, y).getTexture(), x*fieldSize, y*fieldSize, null);
 				}
+				else if(room.checkGroundItem(x, y)) {
+					crayon.drawImage(room.getGroundItem(x, y).getTexture(), x*fieldSize, y*fieldSize, null);
+				}			
 				else {
 					crayon.drawImage(defaultTexture, x*fieldSize, y*fieldSize, null);
 				}

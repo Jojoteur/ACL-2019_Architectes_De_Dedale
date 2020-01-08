@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 import engine.Command;
-import tools.Img;
+import tools.Utility;
 
 public class Texture{
     private static Image defaultTexture;
@@ -16,7 +16,7 @@ public class Texture{
         textures = new Hashtable<String, Image>();
 
         try {
-			defaultTexture = Img.resize("default.jpg", imgSize, imgSize);
+			defaultTexture = Utility.resizeImage("default.jpg", imgSize, imgSize);
 		} catch (IOException e) {
             System.out.println("The default texture is missing.");
 			e.printStackTrace();
@@ -25,8 +25,15 @@ public class Texture{
         checkAndAddTexture("wall", "wall.jpg", imgSize);
         checkAndAddTexture("treasure", "treasure.jpg", imgSize);
         checkAndAddTexture("trap", "trap.jpg", imgSize);
-        checkAndAddTexture("hero", "hero.jpg", imgSize);
-        checkAndAddTexture("healObject", "healObject.jpg", imgSize);
+        checkAndAddTexture("hero_LEFT", "hero_left.jpg", imgSize);
+        checkAndAddTexture("hero_RIGHT", "hero_right.jpg", imgSize);
+        checkAndAddTexture("hero_UP", "hero_up.jpg", imgSize);
+        checkAndAddTexture("hero_DOWN", "hero_down.jpg", imgSize);
+        checkAndAddTexture("goblin_LEFT", "goblin_left.jpg", imgSize);
+        checkAndAddTexture("goblin_RIGHT", "goblin_right.jpg", imgSize);
+        checkAndAddTexture("goblin_UP", "goblin_up.jpg", imgSize);
+        checkAndAddTexture("goblin_DOWN", "goblin_down.jpg", imgSize);
+        checkAndAddTexture("healObject", "heal_object.jpg", imgSize);
     }
 
     public static Image getDefault()
@@ -41,13 +48,13 @@ public class Texture{
 
     public static Image get(String category, Command cmd)
     {
-        return textures.get(category + cmd.name());
+        return textures.get(category +"_"+ cmd.name());
     }
 
     private static void checkAndAddTexture(String key, String filename, int imgSize)
     {
         try {
-			textures.put(key, Img.resize(filename, imgSize, imgSize));
+			textures.put(key, Utility.resizeImage(filename, imgSize, imgSize));
 		} catch (IOException|java.lang.NullPointerException e) {
             System.out.println("The "+key+" texture is missing. \""+filename+"\" given.");
 		}
