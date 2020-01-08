@@ -208,6 +208,7 @@ public class LabyrinthGame implements Game{
 		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
 		activeRoom.addMonster(new Goblin(7,1));
+		activeRoom.addMonster(new Skeleton(6,1));
 	}
 	
 	private void changeRoom(Door door) {

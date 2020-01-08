@@ -33,6 +33,10 @@ public class Texture{
         checkAndAddTexture("goblin_RIGHT", "goblin_right.jpg", imgSize);
         checkAndAddTexture("goblin_UP", "goblin_up.jpg", imgSize);
         checkAndAddTexture("goblin_DOWN", "goblin_down.jpg", imgSize);
+        checkAndAddTexture("skeleton_LEFT", "skeleton_left.jpg", imgSize);
+        checkAndAddTexture("skeleton_RIGHT", "skeleton_right.jpg", imgSize);
+        checkAndAddTexture("skeleton_UP", "skeleton_up.jpg", imgSize);
+        checkAndAddTexture("skeleton_DOWN", "skeleton_down.jpg", imgSize);
         checkAndAddTexture("healObject", "heal_object.jpg", imgSize);
     }
 

@@ -7,7 +7,7 @@ public class Hero extends Character {
 	private boolean victory;
 	
 	public Hero(int x, int y) {
-		super("hero", x, y, 10, 1, 1, 2);
+		super("hero", x, y, 10, 1, 1, 1);
 		victory = false;
 	}
 	
