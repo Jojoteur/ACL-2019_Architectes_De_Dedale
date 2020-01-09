@@ -3,7 +3,7 @@
   <h2>MONSTRE</h2>
   <ul>
     <li>Une tâche de sang apparaît sur le sol lorsqu'un monstre meurt.</li>
-    <li>Les monstres sont répartis de façon aléatoire.<li>
+    <li>Les monstres sont répartis de façon aléatoire.</li>
   </ul>
 
   <h2>ATTAQUES</h2>
