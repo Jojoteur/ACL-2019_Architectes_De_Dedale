@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.Image;
-
 public class Treasure extends GroundItem{
-	public Treasure(int x, int y, Image texture) {
-		super("treasure", x, y, texture);
+	public Treasure(int x, int y) {
+		super("treasure", x, y);
 	}
 
 	@Override

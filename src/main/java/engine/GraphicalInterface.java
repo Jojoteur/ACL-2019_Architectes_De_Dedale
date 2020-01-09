@@ -1,7 +1,8 @@
 package engine;
 public class GraphicalInterface {
-	private DrawingPanel panel;
 	
+	private DrawingPanel panel;
+
 	public GraphicalInterface(GamePainter gamePainter, GameController gameController) {	
 		this.panel=new DrawingPanel(gamePainter);
 		this.panel.addKeyListener(gameController);	

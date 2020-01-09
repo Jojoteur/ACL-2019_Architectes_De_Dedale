@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.Image;
-
 public class HealObject extends GroundItem{
-	public HealObject(int x, int y, Image texture) {
-		super("healObject", x, y, texture);
+	public HealObject(int x, int y) {
+		super("healObject", x, y);
 	}
 
 	@Override

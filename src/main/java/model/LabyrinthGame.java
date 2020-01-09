@@ -1,15 +1,11 @@
 package model;
 
-
-import java.awt.Image;
 import java.io.IOException;
 import java.util.Hashtable;
 import org.json.simple.JSONObject;
 
 import engine.Command;
 import engine.Game;
-import tools.Img;
-import tools.JSON;
 
 public class LabyrinthGame implements Game{
 	private int roomWidth, roomHeight;
@@ -23,6 +19,7 @@ public class LabyrinthGame implements Game{
 		this.roomHeight = roomHeight;
 		rooms = new Hashtable<Integer, Room>();
 		doors = new Hashtable<Integer, Door>();
+		hero = new Hero(1, 1);
 	}
 	
 	public Hero getHero() {
@@ -43,58 +40,33 @@ public class LabyrinthGame implements Game{
 		
 	@Override
 	public void update(Command cmd) {
-		int x = hero.getX();
-		int y = hero.getY();
-		
-		if(activeRoom.checkDoor(x, y)) {
-			Door door = activeRoom.getDoor(x, y);
-			if(cmd == door.getCmd1() && door.getRoom1().getId() == activeRoom.getId() 
-				|| cmd == door.getCmd2() && door.getRoom2().getId() == activeRoom.getId() ) {
-				changeRoom(door);
-				return;
-			}
-		}
-		
-		if(cmd == Command.DOWN) {
-			y = (y < roomHeight - 1) ? y+1 : y;
-		}
-		else if(cmd == Command.UP) {
-			y = (y == 0) ? 0 : y-1;
-		}
-		else if(cmd == Command.LEFT) {
-			x = (x == 0) ? 0 : x-1;
-		}
-		else if(cmd == Command.RIGHT) {
-			x = (x < roomWidth - 1) ? x+1 : x;
-		}
-		
-		boolean canMove = true;
-		
-		if(activeRoom.checkGroundItem(x, y)) {
-			GroundItem groundItem = activeRoom.getGroundItem(x, y);
-			if(!groundItem.canPassThrough()) {
-				canMove = false;
-			}
-			else {
-				groundItem.applyEffects(hero);
-				activeRoom.removeGroundItems(x, y);
-			}
+		Door door = hero.getDoor(cmd, activeRoom);
+
+		if(door != null)
+		{
+			changeRoom(door);
+			return;
 		}
 
+		hero.move(cmd, activeRoom, hero);
+		hero.pickGroundItem(activeRoom);
 
-		if(canMove) {
-			hero.setX(x);
-			hero.setY(y);
-		}
+		activeRoom.moveAndAttackMonsters(hero);
+		hero.attack(cmd, activeRoom, hero);
 	}
 
 	@Override
-	public boolean isFinished() {
+	public boolean isFinishedVictory() {
 		return hero.getVictory();
+	}
+	
+	@Override
+	public boolean isFinishedDead() {
+		return (getHero().getHealthPoints() == 0);
 	}
 		
 	@SuppressWarnings("unchecked")
-	public void saveGame(String name) {
+	public JSONObject getJSON(String name) {
 		JSONObject save = new JSONObject();
 		
 		save.put("hero", hero.save());
@@ -113,58 +85,79 @@ public class LabyrinthGame implements Game{
         save.put("activeRoom", activeRoom.getId());
         save.put("roomWidth", roomWidth);
         save.put("roomHeight", roomHeight);
-        JSONObject saves = JSON.openJSON("saves.json");
-        saves.put(name, save);
-        
-		JSON.saveJSON(saves, "saves.json");
+
+		return save;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void loadGame(String name) throws IOException {
-        JSONObject savesJSON = JSON.openJSON("saves.json");
-        JSONObject saveJSON = (JSONObject) savesJSON.get(name);        
+	public void loadJSON(JSONObject saveJSON) {  
         JSONObject roomsJSON = (JSONObject) saveJSON.get("rooms");
         JSONObject doorsJSON = (JSONObject) saveJSON.get("doors");
         JSONObject heroJSON = (JSONObject) saveJSON.get("hero");
         
-		Image heroTexture = Img.resize("hero.jpg", 50, 50);
-		Image wallTexture = Img.resize("wall.jpg", 50, 50);
-		Image trapTexture = Img.resize("trap.jpg", 50, 50);
-		Image healObjectTexture = Img.resize("healObject.jpg", 50, 50);
-		Image treasureTexture = Img.resize("treasure.jpg", 50, 50);
         hero = new Hero(
         		Math.toIntExact((Long) heroJSON.get("x")), 
-        		Math.toIntExact((Long) heroJSON.get("y")), 
-        		Math.toIntExact((Long) heroJSON.get("healthPoints")),
-        		heroTexture
-        );
-        
+        		Math.toIntExact((Long) heroJSON.get("y"))
+		);
+		
+		hero.setHealthPoints(Math.toIntExact((Long) heroJSON.get("healthPoints")));
+		hero.setCooldownAttack(Math.toIntExact((Long) heroJSON.get("cooldownAttack")));
+		hero.setCooldownMove(Math.toIntExact((Long) heroJSON.get("cooldownMove")));
+		hero.setDirection(Command.valueOf((String) heroJSON.get("direction")));
+
         roomsJSON.forEach((k, v) -> { 
         	JSONObject j = (JSONObject) v;
         	int id = Math.toIntExact((Long) j.get("id"));
         	Room room = new Room(id, Math.toIntExact((Long) j.get("width")), Math.toIntExact((Long) j.get("height")));
-        	rooms.put(id, room);
-        	
+			rooms.put(id, room);
+			
+			JSONObject monsters = (JSONObject) j.get("monsters");
+			
+			monsters.forEach((k2, v2) -> { 
+            	JSONObject j2 = (JSONObject) v2;
+            	String category = (String) j2.get("category");
+            	int x = Math.toIntExact((Long) j2.get("x"));
+            	int y = Math.toIntExact((Long) j2.get("y"));
+            	Monster monster = null;
+            	switch(category) {
+            		case "goblin":
+						monster = new Goblin(x,y);
+            			break;
+            		case "skeleton":
+            			monster = new Skeleton(x,y);
+            			break;
+            		default:
+            			break;
+				}
+				
+				monster.setHealthPoints(Math.toIntExact((Long) j2.get("healthPoints")));
+				monster.setCooldownAttack(Math.toIntExact((Long) j2.get("cooldownAttack")));
+				monster.setCooldownMove(Math.toIntExact((Long) j2.get("cooldownMove")));
+				monster.setDirection(Command.valueOf((String) j2.get("direction")));
+
+				room.addMonster(monster);
+            });
+
         	JSONObject groundItems = (JSONObject) j.get("groundItems");
         	
         	groundItems.forEach((k2, v2) -> { 
             	JSONObject j2 = (JSONObject) v2;
-            	String type = (String) j2.get("type");
+            	String category = (String) j2.get("category");
             	int x = Math.toIntExact((Long) j2.get("x"));
             	int y = Math.toIntExact((Long) j2.get("y"));
             	
-            	switch(type) {
+            	switch(category) {
             		case "wall":
-            			room.addGroundItem(new Wall(x,y, wallTexture));
+            			room.addGroundItem(new Wall(x,y));
             			break;
             		case "trap":
-            			room.addGroundItem(new Trap(x,y, trapTexture));
+            			room.addGroundItem(new Trap(x,y));
             			break;
             		case "healthObject":
-            			room.addGroundItem(new HealObject(x,y, healObjectTexture));
+            			room.addGroundItem(new HealObject(x,y));
             			break;
             		case "treasure":
-            			room.addGroundItem(new Treasure(x,y, treasureTexture));
+            			room.addGroundItem(new Treasure(x,y));
             			break;
             		default:
             			break;
@@ -201,8 +194,7 @@ public class LabyrinthGame implements Game{
 	}
 	
 	public void initFortTest() throws IOException {
-        this.hero = new Hero(1, 1, 10, Img.resize("hero.jpg", 50, 50));
-        Image wallTexture = Img.resize("wall.jpg", 50, 50);
+        this.hero = new Hero(1, 1);
         
         int nbRooms = 4;
 		Room[] rooms = new Room[nbRooms];
@@ -213,7 +205,7 @@ public class LabyrinthGame implements Game{
 			for(int x = 0; x < roomWidth; x++) {
 				for(int y = 0; y < roomHeight; y++) {
 					if(x == 0 || x == roomWidth - 1 || y == 0 || y == roomHeight - 1) {
-						rooms[i].addGroundItem(new Wall(x,y, wallTexture));
+						rooms[i].addGroundItem(new Wall(x,y));
 					}
 				}
 			}
@@ -231,20 +223,18 @@ public class LabyrinthGame implements Game{
 		rooms[1].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
 		rooms[2].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
 		doors.put(1, door);
-		door = new Door(2, roomWidth - 1, 5, Command.RIGHT, rooms[2], 0, 8, Command.LEFT, rooms[3]);
+		door = new Door(2, roomWidth - 1, 5, Command.RIGHT, rooms[2], 0, 5, Command.LEFT, rooms[3]);
 		rooms[2].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
 		rooms[3].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
 		doors.put(2, door);
 		
+		rooms[0].addGroundItem(new Trap(5,5));
+		rooms[0].addGroundItem(new HealObject(5,6));
 		
-		Image trapTexture = Img.resize("trap.jpg", 50, 50);
-		Image healObjectTexture = Img.resize("healObject.jpg", 50, 50);
-		Image treasureTexture = Img.resize("treasure.jpg", 50, 50);
-		rooms[0].addGroundItem(new Trap(5,5,trapTexture));
-		rooms[0].addGroundItem(new HealObject(5,6,healObjectTexture));
-		
-		rooms[3].addGroundItem(new Treasure(5,5,treasureTexture));
+		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
+		activeRoom.addMonster(new Goblin(7,1));
+		activeRoom.addMonster(new Skeleton(6,1));
 	}
 	
 	private void changeRoom(Door door) {

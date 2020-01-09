@@ -1,11 +1,9 @@
 package model;
 
-import java.awt.Image;
-
 public class Trap extends GroundItem{
 
-	public Trap(int x, int y, Image texture) {
-		super("trap", x, y, texture);
+	public Trap(int x, int y) {
+		super("trap", x, y);
 	}
 
 	@Override

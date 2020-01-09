@@ -69,6 +69,9 @@ public class LabyrinthController implements GameController{
 			}
 			this.actualCommand = Command.RIGHT;
 			break;
+		case KeyEvent.VK_SPACE:
+			this.actualCommand = Command.SPACE;
+			break;
 		}
 	}
 	
@@ -79,25 +82,21 @@ public class LabyrinthController implements GameController{
 		case 37: // Flèche vers la gauche
 			LEFT = false;
 			pressedKeys.remove(Command.LEFT);
-			this.actualCommand = Command.LEFT;
 			break;
 		case 90: // Lettre z
 		case 38: // Flèche vers le haut
 			UP = false;
 			pressedKeys.remove(Command.UP);
-			this.actualCommand = Command.UP;
 			break;
 		case 83: // Lettre s
 		case 40: // Flèche vers le bas
 			DOWN = false;
 			pressedKeys.remove(Command.DOWN);
-			this.actualCommand = Command.DOWN;
 			break;
 		case 68: // Lettre d
 		case 39: // Flèche vers la droite
 			RIGHT = false;
 			pressedKeys.remove(Command.RIGHT);
-			this.actualCommand = Command.RIGHT;
 			break;
 		}
 

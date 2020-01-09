@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.Image;
-
 public class Wall extends GroundItem{
-	public Wall(int x, int y, Image texture) {
-		super("wall", x, y, texture);
+	public Wall(int x, int y) {
+		super("wall", x, y);
 	}
 	
 	@Override
