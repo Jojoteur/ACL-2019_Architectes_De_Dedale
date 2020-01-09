@@ -10,5 +10,5 @@
 
 
 Architecture par défaut d'un projet <b>Maven</b>.  
-La création du fichier .jar peut être lancée par la commande Maven : <code>clean compile assembly:single</code>.
+La création du fichier .jar doit être lancée par la commande Maven : <code>assembly:single</code> afin que les libraries soient prises en compte.
 Il faut éxecuter la classe start.Main pour lancer l'application.

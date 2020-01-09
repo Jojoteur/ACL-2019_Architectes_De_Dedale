@@ -7,9 +7,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -161,8 +158,7 @@ public class Application {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String savesPath = getSavePath();
-				JSONObject saves = Utility.openJSON(savesPath);
+				JSONObject saves = Utility.openJSON("./saves.json");
 				ArrayList<String> choices = new ArrayList<String>();
 
 				saves.forEach((k,v) -> {
@@ -302,11 +298,9 @@ public class Application {
 					return;
 				}
 
-				String savesPath = getSavePath();
-				JSONObject saves = Utility.openJSON(savesPath);
-				saves.put(name, save);
-				//saves.put("lol", "prout");				
-				Utility.saveJSON(saves, savesPath);
+				JSONObject saves = Utility.openJSON("./saves.json");
+				saves.put(name, save);				
+				Utility.saveJSON(saves, "./saves.json");
 		    }
 		});
 
@@ -325,16 +319,6 @@ public class Application {
 		        frame.repaint();
 		    }
 		});
-	}
-
-	private String getSavePath() {
-		URI uri = null;
-		try {
-			uri = ClassLoader.getSystemResource("saves.json").toURI();
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
-		}
-		return Paths.get(uri).toString();
 	}
 
 	private void resetGame() {
