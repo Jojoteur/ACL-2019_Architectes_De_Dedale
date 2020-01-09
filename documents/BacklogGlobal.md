@@ -29,7 +29,7 @@
     <li><s>Les monstres se déplacent de manière aléatoire</s></li>
     <li><s>Les monstres se déplacent en allant vers le joueur</s></li>
     <li><s>Différentes catégories de monstres (HP pool, Attaque point)</s></li>
-    <li><s>Boss à la dernière salle</s></li>
+    <li>Boss à la dernière salle</li>
   </ul>
 
   <h2>ATTAQUES</h2>
