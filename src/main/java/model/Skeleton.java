@@ -4,7 +4,7 @@ import engine.Command;
 
 public class Skeleton extends Monster {
 	public Skeleton(int x, int y) {
-		super("skeleton", x, y, 5, 2, 6, 10);
+		super("skeleton", x, y, 5, 2, 500, 1000);
 	}
 
 	@Override

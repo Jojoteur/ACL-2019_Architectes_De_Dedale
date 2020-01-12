@@ -1,7 +1,7 @@
 package model;
 
 import java.util.Hashtable;
-
+import java.awt.Image;
 import org.json.simple.JSONObject;
 
 public class Room {
@@ -9,6 +9,7 @@ public class Room {
 	private Hashtable<Integer,GroundItem> groundItems;
 	private Hashtable<Integer,Door> doors;
 	private Hashtable<Integer,Monster> monsters;
+	private Hashtable<Integer,String> textures;
 	
 	public Room(int id, int width, int height) {
 		this.height = height;
@@ -17,6 +18,7 @@ public class Room {
 		groundItems = new Hashtable<Integer,GroundItem>();
 		doors = new Hashtable<Integer,Door>();
 		monsters = new Hashtable<Integer,Monster>();
+		textures = new Hashtable<Integer,String>();
 	}
 
 	public int getHeight() {
@@ -39,6 +41,20 @@ public class Room {
 	public Room addMonster(Monster monster) {
 		monsters.put(hashXY(monster.getX(),monster.getY()), monster);
 		return this;
+	}
+
+	//Methodes pour les monstres
+	public Room addTexture(String texture, int x, int y) {
+		textures.put(hashXY(x,y), texture);
+		return this;
+	}
+
+	public Image getTexture(int x, int y) {
+		return Texture.get(textures.get(hashXY(x,y)));
+	}
+
+	public boolean checkTexture(int x, int y) {
+		return textures.containsKey(hashXY(x,y));
 	}
 	
 	public boolean checkMonster(int x, int y) {
@@ -63,7 +79,12 @@ public class Room {
 
 		this.monsters.forEach((k, monster) -> {
 			monster.move(this, hero);
-			newMonsters.put(hashXY(monster.getX(),monster.getY()), monster);
+
+			int hashKey = hashXY(monster.getX(),monster.getY());
+			if(!newMonsters.containsKey(hashKey)) {
+				newMonsters.put(hashKey, monster);
+			}
+			
 			monster.attack(null, this, hero);
 		});
 		

@@ -2,7 +2,7 @@
 
   <h2>MONSTRE</h2>
   <ul>
-    <li>Une tâche de sang apparaît sur le sol lorsqu'un monstre meurt.</li>
+    <li><s>Une tâche de sang apparaît sur le sol lorsqu'un monstre meurt.</s></li>
     <li>Les monstres sont répartis de façon aléatoire.</li>
   </ul>
 
@@ -14,7 +14,7 @@
   
   <h2>JOUEUR</h2>
   <ul>
-    <li>Le joueur peut relancer une partie.</li>
+    <li><s>Le joueur peut relancer une partie.</s></li>
   </ul>
   
   <h2>CARTE</h2>

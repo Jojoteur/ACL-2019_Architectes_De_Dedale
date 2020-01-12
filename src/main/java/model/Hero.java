@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import engine.Command;
 
 public class Hero extends Character {
@@ -7,7 +9,7 @@ public class Hero extends Character {
 	private boolean victory;
 	
 	public Hero(int x, int y) {
-		super("hero", x, y, 10, 1, 0, 1);
+		super("hero", x, y, 10, 1, 200, 333);
 		victory = false;
 	}
 	
@@ -23,7 +25,9 @@ public class Hero extends Character {
 		if(activeRoom.checkGroundItem(x, y)) {
 			GroundItem groundItem = activeRoom.getGroundItem(x, y);
 			groundItem.applyEffects(this);
-			activeRoom.removeGroundItems(x, y);			
+			if(groundItem.removeWhenPicked()) {
+				activeRoom.removeGroundItems(x, y);
+			}	
 		}
 	}
 
@@ -44,12 +48,15 @@ public class Hero extends Character {
 		if(!cmd.equals(Command.SPACE)) {
 			return;
 		}
-		else if(cooldownAttack > 0) {
-			cooldownAttack--;
+
+		Date date = new Date();
+		long milliseconds = date.getTime();
+
+		if(milliseconds < lastAttack + cooldownAttack) {
 			return;
 		}
 		
-		cooldownAttack = cooldownAttackInit;
+		lastAttack = milliseconds;
 
 		int targetX = x;
 		int targetY = y;
@@ -76,6 +83,7 @@ public class Hero extends Character {
 			monster.addHealthPoints(-attackPoints);
 			if(monster.getHealthPoints() <= 0) {
 				activeRoom.removeMonster(targetX, targetY);
+				activeRoom.addTexture("blood", targetX, targetY);
 			}
 		}
 	}

@@ -1,15 +1,12 @@
 package model;
 
+import java.util.Date;
+
 import engine.Command;
 
-
 public abstract class Monster extends Character{
-	public Monster (String category, int x, int y, int healthPoints, int attackPoints, int cooldownMoveInit, int cooldownAttackInit) {
-		super(category, x, y, healthPoints, attackPoints, cooldownMoveInit, cooldownAttackInit);
-	}
-	
-	public String getcategory() {
-		return this.category;
+	public Monster (String category, int x, int y, int healthPoints, int attackPoints, int cooldownMove, int cooldownAttack) {
+		super(category, x, y, healthPoints, attackPoints, cooldownMove, cooldownAttack);
 	}
 
 	public void move(Room activeRoom, Hero hero) {
@@ -37,20 +34,22 @@ public abstract class Monster extends Character{
 			default:
 				break;
 		}
-		
+
+		Date date = new Date();
+		long milliseconds = date.getTime();
+
 		// Si le goblin est à côté du joueur.
 		if(hero.getX() == targetX && hero.getY() == targetY) {
 
 			// S'il est à côté depuis assez de coups de clock pour taper.
-			if(cooldownAttack > 0) {
-				cooldownAttack--;
+			if(milliseconds < lastAttack + cooldownAttack) {
 				return;
 			}
 
 			hero.addHealthPoints(-attackPoints);			
 		}
 
-		cooldownAttack = cooldownAttackInit;
+		lastAttack = milliseconds;
 
 	}
 	

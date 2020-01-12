@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -39,7 +38,7 @@ public class Application {
 	private int roomWidth, roomHeight, fieldSize, windowHeight, windowWidth;
 	private boolean gameSet;
 
-	public Application() throws IOException, InterruptedException {
+	public Application() throws InterruptedException {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
@@ -48,6 +47,7 @@ public class Application {
 		roomWidth = 15;
 		roomHeight = 10;
 		fieldSize = 50;
+		int fps = 60;
 		windowWidth = (int) (fieldSize * roomWidth);
 		windowHeight = (int) (fieldSize * roomHeight + 50);
 
@@ -59,7 +59,7 @@ public class Application {
 		controller = new LabyrinthController();
 		engine = new GameEngine(game, controller, painter);
 
-		timer = new Timer(100, null);
+		timer = new Timer((int) (1000/fps), null);
 		timer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				engine.run();
@@ -143,11 +143,7 @@ public class Application {
 				frame.repaint();
 
 				if (!gameSet) {
-					try {
-						game.initFortTest();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+					game.initMap();
 				}
 
 				timer.start();
@@ -246,10 +242,12 @@ public class Application {
 
 	private void initPauseMenu() {
 		JButton resumeButton = new JButton("Continuer la partie");
-		JButton exitButton = new JButton("Quitter la partie");
+		JButton restartButton = new JButton("Relancer une nouvelle partie");		
 		JButton saveButton = new JButton("Sauvegarder la partie");
+		JButton exitButton = new JButton("Quitter la partie");
 		designMenuButton(saveButton);
 		designMenuButton(resumeButton);
+		designMenuButton(restartButton);
 		designMenuButton(exitButton);
 
 		panelPause = new JPanel();
@@ -268,6 +266,8 @@ public class Application {
 		panelCenter.add(Box.createRigidArea(new Dimension(0, 20)));
 		panelCenter.add(resumeButton);
 		panelCenter.add(Box.createRigidArea(new Dimension(0, 20)));
+		panelCenter.add(restartButton);
+		panelCenter.add(Box.createRigidArea(new Dimension(0, 20)));
 		panelCenter.add(saveButton);
 		panelCenter.add(Box.createRigidArea(new Dimension(0, 20)));
 		panelCenter.add(exitButton);
@@ -284,6 +284,21 @@ public class Application {
 				frame.pack();
 				frame.revalidate();
 				frame.repaint();
+				timer.start();
+			}
+		});
+
+		restartButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel contentPane = (JPanel) frame.getContentPane();
+				contentPane.remove(panelPause);
+				contentPane.add(panelGame);
+				contentPane.addKeyListener(controller);
+				frame.pack();
+				frame.revalidate();
+				frame.repaint();
+				game.initMap();
 				timer.start();
 			}
 		});

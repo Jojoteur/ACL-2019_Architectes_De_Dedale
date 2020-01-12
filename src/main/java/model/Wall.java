@@ -14,4 +14,9 @@ public class Wall extends GroundItem{
 	public void applyEffects(Hero hero) {
 		return;
 	}
+
+	@Override
+	public boolean removeWhenPicked() {
+		return false;
+	}
 }

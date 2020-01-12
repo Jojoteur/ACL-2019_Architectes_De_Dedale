@@ -5,7 +5,7 @@ import tools.Utility;
 
 public class Goblin extends Monster {	
 	public Goblin(int x, int y) {
-		super("goblin", x, y, 2, 1, 4, 5);
+		super("goblin", x, y, 2, 1, 400, 800);
 	}
 
 	@Override
