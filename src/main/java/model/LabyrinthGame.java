@@ -1,6 +1,5 @@
 package model;
 
-import java.io.IOException;
 import java.util.Hashtable;
 import org.json.simple.JSONObject;
 
@@ -47,7 +46,7 @@ public class LabyrinthGame implements Game{
 			changeRoom(door);
 			return;
 		}
-
+		
 		hero.move(cmd, activeRoom, hero);
 		hero.pickGroundItem(activeRoom);
 
@@ -62,7 +61,7 @@ public class LabyrinthGame implements Game{
 	
 	@Override
 	public boolean isFinishedDead() {
-		return (getHero().getHealthPoints() == 0);
+		return (getHero().getHealthPoints() <= 0);
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -99,10 +98,10 @@ public class LabyrinthGame implements Game{
         		Math.toIntExact((Long) heroJSON.get("x")), 
         		Math.toIntExact((Long) heroJSON.get("y"))
 		);
-		
+
 		hero.setHealthPoints(Math.toIntExact((Long) heroJSON.get("healthPoints")));
-		hero.setCooldownAttack(Math.toIntExact((Long) heroJSON.get("cooldownAttack")));
-		hero.setCooldownMove(Math.toIntExact((Long) heroJSON.get("cooldownMove")));
+		hero.setLastAttack((Long) heroJSON.get("lastAttack"));
+		hero.setLastMove((Long) heroJSON.get("lastMove"));
 		hero.setDirection(Command.valueOf((String) heroJSON.get("direction")));
 
         roomsJSON.forEach((k, v) -> { 
@@ -131,8 +130,8 @@ public class LabyrinthGame implements Game{
 				}
 				
 				monster.setHealthPoints(Math.toIntExact((Long) j2.get("healthPoints")));
-				monster.setCooldownAttack(Math.toIntExact((Long) j2.get("cooldownAttack")));
-				monster.setCooldownMove(Math.toIntExact((Long) j2.get("cooldownMove")));
+				monster.setLastAttack((Long) j2.get("lastAttack"));
+				monster.setLastMove((Long) j2.get("lastMove"));
 				monster.setDirection(Command.valueOf((String) j2.get("direction")));
 
 				room.addMonster(monster);
@@ -193,10 +192,10 @@ public class LabyrinthGame implements Game{
 		activeRoom = this.rooms.get(Math.toIntExact((Long) saveJSON.get("activeRoom")));
 	}
 	
-	public void initFortTest() throws IOException {
+	public void initMap() {
         this.hero = new Hero(1, 1);
         
-        int nbRooms = 4;
+        int nbRooms = 25;
 		Room[] rooms = new Room[nbRooms];
 		
 		for(int i = 0; i < nbRooms; i++) {
@@ -208,33 +207,57 @@ public class LabyrinthGame implements Game{
 						rooms[i].addGroundItem(new Wall(x,y));
 					}
 				}
-			}
-			
-			this.rooms.put(i, rooms[i]);
-			
+			}			
+			this.rooms.put(i, rooms[i]);			
 		}
 		
-		Door door;
-		door = new Door(0, 0, 5, Command.LEFT, rooms[0], roomWidth - 1, 5, Command.RIGHT, rooms[1]);
-		rooms[0].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
-		rooms[1].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
-		doors.put(0, door);
-		door = new Door(1, 7, 0, Command.UP, rooms[1], 7, roomHeight - 1, Command.DOWN, rooms[2]);
-		rooms[1].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
-		rooms[2].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
-		doors.put(1, door);
-		door = new Door(2, roomWidth - 1, 5, Command.RIGHT, rooms[2], 0, 5, Command.LEFT, rooms[3]);
-		rooms[2].addDoor(door).removeGroundItems(door.getX1(), door.getY1());
-		rooms[3].addDoor(door).removeGroundItems(door.getX2(), door.getY2());
-		doors.put(2, door);
-		
+		int idDoor = 0;
+		// Portes sur axe X
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[22], roomWidth - 1, 5, Command.RIGHT, rooms[23]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[21], roomWidth - 1, 5, Command.RIGHT, rooms[22]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[3], roomWidth - 1, 5, Command.RIGHT, rooms[2]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[0], roomWidth - 1, 5, Command.RIGHT, rooms[1]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[1], roomWidth - 1, 5, Command.RIGHT, rooms[4]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[4], roomWidth - 1, 5, Command.RIGHT, rooms[15]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[14], roomWidth - 1, 5, Command.RIGHT, rooms[13]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[9], roomWidth - 1, 5, Command.RIGHT, rooms[8]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[8], roomWidth - 1, 5, Command.RIGHT, rooms[7]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[7], roomWidth - 1, 5, Command.RIGHT, rooms[10]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[10], roomWidth - 1, 5, Command.RIGHT, rooms[11]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[11], roomWidth - 1, 5, Command.RIGHT, rooms[12]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[12], roomWidth - 1, 5, Command.RIGHT, rooms[18]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[18], roomWidth - 1, 5, Command.RIGHT, rooms[19]);
+
+		// Portes sur axe Y
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[12], 7, roomHeight - 1, Command.DOWN, rooms[13]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[14], 7, roomHeight - 1, Command.DOWN, rooms[15]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[17], 7, roomHeight - 1, Command.DOWN, rooms[16]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[16], 7, roomHeight - 1, Command.DOWN, rooms[10]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[4], 7, roomHeight - 1, Command.DOWN, rooms[5]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[24], 7, roomHeight - 1, Command.DOWN, rooms[23]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[7], 7, roomHeight - 1, Command.DOWN, rooms[6]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[6], 7, roomHeight - 1, Command.DOWN, rooms[1]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[1], 7, roomHeight - 1, Command.DOWN, rooms[2]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[3], 7, roomHeight - 1, Command.DOWN, rooms[20]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[20], 7, roomHeight - 1, Command.DOWN, rooms[21]);
+
 		rooms[0].addGroundItem(new Trap(5,5));
 		rooms[0].addGroundItem(new HealObject(5,6));
 		
 		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
-		activeRoom.addMonster(new Goblin(7,1));
+		//activeRoom.addMonster(new Goblin(7,1));
 		activeRoom.addMonster(new Skeleton(6,1));
+		activeRoom.addMonster(new Skeleton(8,1));
+		activeRoom.addMonster(new Skeleton(10,1));
+		activeRoom.addMonster(new Skeleton(12,1));
+	}
+
+	private void addDoor(int idDoor, int x1, int y1, Command cmd1, Room room1, int x2, int y2, Command cmd2, Room room2) {
+		Door door = new Door(idDoor, x1, y1, cmd1, room1, x2, y2, cmd2, room2);
+		room1.addDoor(door).removeGroundItems(door.getX1(), door.getY1());
+		room2.addDoor(door).removeGroundItems(door.getX2(), door.getY2());
+		doors.put(idDoor++, door);
 	}
 	
 	private void changeRoom(Door door) {

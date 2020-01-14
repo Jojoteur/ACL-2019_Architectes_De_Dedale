@@ -29,6 +29,7 @@ public abstract class GroundItem {
 	
 	public abstract boolean canPassThrough();
 	public abstract void applyEffects(Hero hero);
+	public abstract boolean removeWhenPicked();
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject save() {

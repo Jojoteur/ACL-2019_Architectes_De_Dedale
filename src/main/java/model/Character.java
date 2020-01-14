@@ -1,27 +1,32 @@
 package model;
 
 import java.awt.Image;
+import java.util.Date;
+import java.util.Random;
 
 import org.json.simple.JSONObject;
 
 import engine.Command;
 
 public abstract class Character {
-	protected int x, y, healthPoints, attackPoints, cooldownMoveInit, cooldownMove, cooldownAttack, cooldownAttackInit;
+	protected int x, y, healthPoints, attackPoints, cooldownMove, cooldownAttack;
 	protected String category;
 	protected Command direction;
+	protected long lastMove, lastAttack;
 	
-	public Character(String category, int x, int y, int healthPoints, int attackPoints, int cooldownMoveInit, int cooldownAttackInit) {
+	public Character(String category, int x, int y, int healthPoints, int attackPoints, int cooldownMove, int cooldownAttack) {
 		this.x = x;
 		this.y = y;
 		this.healthPoints = healthPoints;
 		this.attackPoints = attackPoints;
 		this.category = category;
 		this.direction = Command.DOWN;
-		this.cooldownMoveInit = cooldownMoveInit;
-		this.cooldownMove = cooldownMoveInit;
-		this.cooldownAttackInit = cooldownAttackInit;
-		this.cooldownAttack = cooldownAttackInit;	
+		Date date = new Date();
+		Random r = new Random();
+		this.lastMove = date.getTime() - r.nextInt(cooldownMove + 1);
+		this.lastAttack = date.getTime() - r.nextInt(cooldownAttack + 1);
+		this.cooldownMove = cooldownMove;
+		this.cooldownAttack = cooldownAttack;	
 	}
 
 	public void setX(int x) {
@@ -52,12 +57,12 @@ public abstract class Character {
 		this.healthPoints = healthPoints;
 	}
 
-	public void setCooldownMove(int cooldownMove) {
-		this.cooldownMove = cooldownMove;
+	public void setLastAttack(long lastAttack) {
+		this.lastAttack = lastAttack;
 	}
 
-	public void setCooldownAttack(int cooldownAttack) {
-		this.cooldownAttack = cooldownAttack;
+	public void setLastMove(long lastAttack) {
+		this.lastAttack = lastAttack;
 	}
 
 	public void setDirection(Command direction) {
@@ -68,8 +73,8 @@ public abstract class Character {
 		return Texture.get(category, direction);
 	}
 
-	public String getCategory() {
-		return category;
+	public Command getDirection() {
+		return direction;
 	}
 
 	public void move(Command cmd, Room activeRoom, Hero hero)
@@ -95,26 +100,28 @@ public abstract class Character {
 		}
 	}
 
-	private boolean canMove(Command cmd, int x, int y, Room activeRoom, Hero hero) {		
-		if(cooldownMove <= 0) {
-			cooldownMove = cooldownMoveInit;
+	private boolean canMove(Command cmd, int x, int y, Room activeRoom, Hero hero) {
+		Date date = new Date();
+		long milliseconds = date.getTime();
 
-			if(cmd.equals(Command.DOWN) 
-			|| cmd.equals(Command.UP) 
-			|| cmd.equals(Command.RIGHT)
-			|| cmd.equals(Command.LEFT)) {
-				this.direction = cmd;				
-			}
-
-			return !activeRoom.checkMonster(x, y)
-				&& (x != hero.getX() || y != hero.getY())
-				&& (!activeRoom.checkGroundItem(x, y) 
-					|| activeRoom.getGroundItem(x, y).canPassThrough());
-		}
-		else {
-			cooldownMove--;
+		if(milliseconds < lastMove + cooldownMove){
 			return false;
-		}		
+		}
+
+		lastMove = milliseconds;
+
+		if(cmd.equals(Command.DOWN) 
+		|| cmd.equals(Command.UP) 
+		|| cmd.equals(Command.RIGHT)
+		|| cmd.equals(Command.LEFT)) {
+			this.direction = cmd;				
+		}
+
+		return !activeRoom.checkMonster(x, y)
+			&& (x != hero.getX() || y != hero.getY())
+			&& (!activeRoom.checkGroundItem(x, y) 
+				|| activeRoom.getGroundItem(x, y).canPassThrough());
+	
 	}
 
 	abstract public void attack(Command cmd, Room activeRoom, Hero hero);	
@@ -127,8 +134,8 @@ public abstract class Character {
 		j.put("y", y);
 		j.put("healthPoints", healthPoints);
 		j.put("attackPoints", attackPoints);
-		j.put("cooldownMove", cooldownMove);
-		j.put("cooldownAttack", cooldownAttack);
+		j.put("lastAttack", lastAttack);
+		j.put("lastMove", lastMove);
 		j.put("category", category);
 		j.put("direction", direction.toString());
 		return j;

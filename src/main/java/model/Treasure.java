@@ -15,5 +15,8 @@ public class Treasure extends GroundItem{
 		hero.setVictory(true);
 	}
 	
-	
+	@Override
+	public boolean removeWhenPicked() {
+		return true;
+	}
 }

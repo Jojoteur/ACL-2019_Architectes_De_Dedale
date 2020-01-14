@@ -14,6 +14,9 @@ public class HealObject extends GroundItem{
 	public void applyEffects(Hero hero) {
 		hero.addHealthPoints(1);
 	}
-	
-	
+
+	@Override
+	public boolean removeWhenPicked() {
+		return true;
+	}	
 }

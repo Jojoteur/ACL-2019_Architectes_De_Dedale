@@ -47,6 +47,6 @@
     <li><s>Le joueur peut quitter le jeu</s></li>
     <li><s>Le joueur peut sauvegarder des parties</s></li>
     <li><s>Le joueur peut charger des sauvegardes</s></li>
-    <li>Le joueur peut relancer une partie</li>
+    <li><s>Le joueur peut relancer une partie</s></li>
     <li>Le joueur peut gérer l'inventaire de son héros</li>
   </ul>

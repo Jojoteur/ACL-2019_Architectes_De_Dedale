@@ -14,7 +14,6 @@ public class Texture{
     public static void initTextures(int imgSize)
     {
         textures = new Hashtable<String, Image>();
-
         try {
 			defaultTexture = Utility.resizeImage("default.jpg", imgSize, imgSize);
 		} catch (IOException e) {
@@ -23,21 +22,22 @@ public class Texture{
         }
         
         checkAndAddTexture("wall", "wall.jpg", imgSize);
-        checkAndAddTexture("treasure", "treasure.jpg", imgSize);
-        checkAndAddTexture("trap", "trap.jpg", imgSize);
-        checkAndAddTexture("hero_LEFT", "hero_LEFT.jpg", imgSize);
-        checkAndAddTexture("hero_RIGHT", "hero_RIGHT.jpg", imgSize);
-        checkAndAddTexture("hero_UP", "hero_UP.jpg", imgSize);
-        checkAndAddTexture("hero_DOWN", "hero_DOWN.jpg", imgSize);
-        checkAndAddTexture("goblin_LEFT", "goblin_LEFT.jpg", imgSize);
-        checkAndAddTexture("goblin_RIGHT", "goblin_RIGHT.jpg", imgSize);
-        checkAndAddTexture("goblin_UP", "goblin_UP.jpg", imgSize);
-        checkAndAddTexture("goblin_DOWN", "goblin_DOWN.jpg", imgSize);
-        checkAndAddTexture("skeleton_LEFT", "skeleton_LEFT.jpg", imgSize);
-        checkAndAddTexture("skeleton_RIGHT", "skeleton_RIGHT.jpg", imgSize);
-        checkAndAddTexture("skeleton_UP", "skeleton_UP.jpg", imgSize);
-        checkAndAddTexture("skeleton_DOWN", "skeleton_DOWN.jpg", imgSize);
-        checkAndAddTexture("healObject", "healObject.jpg", imgSize);
+        checkAndAddTexture("treasure", "treasure.png", imgSize);
+        checkAndAddTexture("trap", "trap.png", imgSize);
+        checkAndAddTexture("hero_LEFT", "hero_LEFT.png", imgSize);
+        checkAndAddTexture("hero_RIGHT", "hero_RIGHT.png", imgSize);
+        checkAndAddTexture("hero_UP", "hero_UP.png", imgSize);
+        checkAndAddTexture("hero_DOWN", "hero_DOWN.png", imgSize);
+        checkAndAddTexture("goblin_LEFT", "goblin_LEFT.png", imgSize);
+        checkAndAddTexture("goblin_RIGHT", "goblin_RIGHT.png", imgSize);
+        checkAndAddTexture("goblin_UP", "goblin_UP.png", imgSize);
+        checkAndAddTexture("goblin_DOWN", "goblin_DOWN.png", imgSize);
+        checkAndAddTexture("skeleton_LEFT", "skeleton_LEFT.png", imgSize);
+        checkAndAddTexture("skeleton_RIGHT", "skeleton_RIGHT.png", imgSize);
+        checkAndAddTexture("skeleton_UP", "skeleton_UP.png", imgSize);
+        checkAndAddTexture("skeleton_DOWN", "skeleton_DOWN.png", imgSize);
+        checkAndAddTexture("healObject", "healObject.png", imgSize);
+        checkAndAddTexture("blood", "blood.png", imgSize);
     }
 
     public static Image getDefault()
