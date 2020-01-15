@@ -78,17 +78,25 @@ public class Room {
 		Hashtable<Integer,Monster> newMonsters = new Hashtable<Integer,Monster>();
 
 		this.monsters.forEach((k, monster) -> {
-			monster.move(this, hero);
-
 			int hashKey = hashXY(monster.getX(),monster.getY());
-			if(!newMonsters.containsKey(hashKey)) {
-				newMonsters.put(hashKey, monster);
-			}
-			
+			newMonsters.put(hashKey, monster);			
 			monster.attack(null, this, hero);
 		});
-		
-		this.monsters = newMonsters;
+
+		newMonsters.forEach((k, monster) -> {
+			int oldX = monster.getX();
+			int oldY = monster.getY();
+			monster.move(this, hero);
+			int hashKey = hashXY(monster.getX(),monster.getY());
+
+			if(!this.monsters.containsKey(hashKey)) {
+				monsters.remove(hashXY(oldX, oldY));
+				monsters.put(hashKey, monster);
+			}
+
+						
+			monster.attack(null, this, hero);
+		});
 	}
 	
 	//Methodes pour les doors
