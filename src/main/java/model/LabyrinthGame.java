@@ -193,14 +193,14 @@ public class LabyrinthGame implements Game{
 	}
 	
 	public void initMap() {
-        this.hero = new Hero(1, 1);
+        this.hero = new Hero(roomWidth - 2, 5);
         
-        int nbRooms = 25;
+        int nbRooms = 10;
 		Room[] rooms = new Room[nbRooms];
 		
 		for(int i = 0; i < nbRooms; i++) {
 			rooms[i] = new Room(i, roomWidth, roomHeight);
-			
+			this.rooms.put(i, rooms[i]);
 			for(int x = 0; x < roomWidth; x++) {
 				for(int y = 0; y < roomHeight; y++) {
 					if(x == 0 || x == roomWidth - 1 || y == 0 || y == roomHeight - 1) {
@@ -208,49 +208,160 @@ public class LabyrinthGame implements Game{
 					}
 				}
 			}			
-			this.rooms.put(i, rooms[i]);			
 		}
 		
 		int idDoor = 0;
 		// Portes sur axe X
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[22], roomWidth - 1, 5, Command.RIGHT, rooms[23]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[21], roomWidth - 1, 5, Command.RIGHT, rooms[22]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[8], roomWidth - 1, 8, Command.RIGHT, rooms[9]);
 		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[3], roomWidth - 1, 5, Command.RIGHT, rooms[2]);
 		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[0], roomWidth - 1, 5, Command.RIGHT, rooms[1]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[1], roomWidth - 1, 5, Command.RIGHT, rooms[4]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[4], roomWidth - 1, 5, Command.RIGHT, rooms[15]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[14], roomWidth - 1, 5, Command.RIGHT, rooms[13]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[9], roomWidth - 1, 5, Command.RIGHT, rooms[8]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[8], roomWidth - 1, 5, Command.RIGHT, rooms[7]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[7], roomWidth - 1, 5, Command.RIGHT, rooms[10]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[10], roomWidth - 1, 5, Command.RIGHT, rooms[11]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[11], roomWidth - 1, 5, Command.RIGHT, rooms[12]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[12], roomWidth - 1, 5, Command.RIGHT, rooms[18]);
-		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[18], roomWidth - 1, 5, Command.RIGHT, rooms[19]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[1], roomWidth - 1, 5, Command.RIGHT, rooms[5]);
+		addDoor(idDoor++, 0, 5, Command.LEFT, rooms[6], roomWidth - 1, 5, Command.RIGHT, rooms[7]);
 
 		// Portes sur axe Y
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[12], 7, roomHeight - 1, Command.DOWN, rooms[13]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[14], 7, roomHeight - 1, Command.DOWN, rooms[15]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[17], 7, roomHeight - 1, Command.DOWN, rooms[16]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[16], 7, roomHeight - 1, Command.DOWN, rooms[10]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[4], 7, roomHeight - 1, Command.DOWN, rooms[5]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[24], 7, roomHeight - 1, Command.DOWN, rooms[23]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[7], 7, roomHeight - 1, Command.DOWN, rooms[6]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[6], 7, roomHeight - 1, Command.DOWN, rooms[1]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[4], 7, roomHeight - 1, Command.DOWN, rooms[1]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[5], 7, roomHeight - 1, Command.DOWN, rooms[6]);
 		addDoor(idDoor++, 7, 0, Command.UP, rooms[1], 7, roomHeight - 1, Command.DOWN, rooms[2]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[3], 7, roomHeight - 1, Command.DOWN, rooms[20]);
-		addDoor(idDoor++, 7, 0, Command.UP, rooms[20], 7, roomHeight - 1, Command.DOWN, rooms[21]);
+		addDoor(idDoor++, 7, 0, Command.UP, rooms[3], 7, roomHeight - 1, Command.DOWN, rooms[8]);
 
-		rooms[0].addGroundItem(new Trap(5,5));
-		rooms[0].addGroundItem(new HealObject(5,6));
-		
-		rooms[3].addGroundItem(new Treasure(5,5));
 		activeRoom = rooms[0];
-		//activeRoom.addMonster(new Goblin(7,1));
-		activeRoom.addMonster(new Skeleton(6,1));
-		activeRoom.addMonster(new Skeleton(8,1));
-		activeRoom.addMonster(new Skeleton(10,1));
-		activeRoom.addMonster(new Skeleton(12,1));
+
+		int[] arrayX0 = {1, 2, 2, 2, 2, 2, 2, 3, 4, 6, 7, 8, 8, 8, 8, 8, 8, 9, 10};
+		int[] arrayY0 = {6, 5, 6, 7, 4, 3, 1, 3, 3, 3, 3, 3, 2, 1, 5, 6, 7, 5, 5};
+		addWalls(rooms[0], arrayX0, arrayY0);
+		rooms[0].addGroundItem(new HealObject(1, 7));
+		rooms[0].addGroundItem(new Trap(5, 8));
+		rooms[0].addGroundItem(new Trap(10, 4));
+		rooms[0].addGroundItem(new Trap(4, 2));
+		rooms[0].addGroundItem(new Trap(6, 1));
+		rooms[0].addMonster(new Goblin(5, 6));
+
+		int[] arrayX1 = {2, 2, 3, 3, 4, 4,10,11,12,10,11,12, 6, 8, 6, 7, 8};
+		int[] arrayY1 = {6, 7, 6, 7, 6, 7, 6, 6, 6, 7, 7, 7, 1, 1, 4, 4, 4};
+		addWalls(rooms[1], arrayX1, arrayY1);
+		rooms[1].addGroundItem(new Trap(3, 3));
+		rooms[1].addGroundItem(new Trap(11, 3));
+		rooms[1].addGroundItem(new Trap(7, 6));
+		rooms[1].addGroundItem(new Trap(7, 7));
+		rooms[1].addMonster(new Goblin(3, 4));
+		rooms[1].addMonster(new Goblin(11, 4));
+
+		int[] arrayX2 = {13,12,11,11,11,11,10, 9, 8, 7, 6, 5, 4, 3, 6, 6, 5};
+		int[] arrayY2 = { 6, 6, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6, 5, 6};
+		addWalls(rooms[2], arrayX2, arrayY2);
+		rooms[2].addGroundItem(new Trap(13, 4));
+		rooms[2].addGroundItem(new Trap(12, 2));
+		rooms[2].addGroundItem(new Trap(2, 2));
+		rooms[2].addGroundItem(new Trap(4, 1));
+		rooms[2].addGroundItem(new Trap(5, 1));
+		rooms[2].addGroundItem(new Trap(7, 2));
+		rooms[2].addGroundItem(new Trap(8, 2));
+		rooms[2].addGroundItem(new Trap(10, 1));
+		rooms[2].addGroundItem(new Trap(5, 7));
+		rooms[2].addGroundItem(new Trap(5, 8));
+		rooms[2].addGroundItem(new Trap(12, 8));
+		rooms[2].addGroundItem(new Trap(11, 8));
+		rooms[2].addGroundItem(new HealObject(13, 8));
+		rooms[2].addMonster(new Skeleton(10, 4));
+		rooms[2].addMonster(new Goblin(5, 5));
+
+		int[] arrayX3 = {1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12, 7, 7, 7, 6, 6};
+		int[] arrayY3 = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 7, 3, 2};
+		addWalls(rooms[3], arrayX3, arrayY3);
+		rooms[3].addGroundItem(new HealObject(5, 3));
+		rooms[3].addGroundItem(new Trap(2, 2));
+		rooms[3].addGroundItem(new Trap(3, 2));
+		rooms[3].addGroundItem(new Trap(4, 2));
+		rooms[3].addGroundItem(new Trap(5, 2));
+		rooms[3].addGroundItem(new Trap(10, 1));
+		rooms[3].addGroundItem(new Trap(12, 7));
+		rooms[3].addGroundItem(new Trap(8, 5));
+		rooms[3].addGroundItem(new Trap(4, 6));
+		rooms[3].addGroundItem(new Trap(5, 6));
+		rooms[3].addMonster(new Goblin(5, 7));
+		rooms[3].addMonster(new Goblin(12, 6));
+		rooms[3].addMonster(new Goblin(10, 2));
+		int[] arrayX4 = {2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,12,12,12,12,12};
+		int[] arrayY4 = {2, 3, 4, 5, 6, 7, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7};
+		addWalls(rooms[4], arrayX4, arrayY4);
+		rooms[4].addGroundItem(new Trap(7, 4));
+		rooms[4].addGroundItem(new Trap(6, 4));
+		rooms[4].addGroundItem(new Trap(8, 4));
+		rooms[4].addGroundItem(new HealObject(7, 3));
+		rooms[4].addMonster(new Skeleton(4, 5));
+		rooms[4].addMonster(new Skeleton(10, 5));
+
+		int[] arrayX5 = {2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 8, 9,10,11,12,12,12,12,12,12, 3, 4, 5, 6, 8, 9,10,11};
+		int[] arrayY5 = {2, 3, 4, 5, 6, 7, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 5, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6};
+		addWalls(rooms[5], arrayX5, arrayY5);
+		rooms[5].addGroundItem(new Trap(12, 1));
+		rooms[5].addGroundItem(new Trap(13, 1));
+		rooms[5].addGroundItem(new Trap(13, 2));
+		rooms[5].addGroundItem(new Trap(13, 3));
+		rooms[5].addGroundItem(new Trap(13, 4));
+		rooms[5].addGroundItem(new Trap(7, 3));
+		rooms[5].addGroundItem(new Trap(9, 8));
+		rooms[5].addMonster(new Goblin(7, 4));
+		rooms[5].addMonster(new Goblin(1, 5));
+		int[] arrayX6 = {2, 2, 2, 2, 2, 1, 3, 4, 5, 6, 8, 9,10,11,12,12,12,12,12,12, 3, 4, 5, 6, 8, 9,10,11, 4, 6, 8, 8};
+		int[] arrayY6 = {2, 3, 4, 5, 6, 6, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 4, 5, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 1, 2, 7, 8};
+		addWalls(rooms[6], arrayX6, arrayY6);
+		rooms[6].addGroundItem(new Trap(10, 8));
+		rooms[6].addGroundItem(new Trap(6, 7));
+		rooms[6].addGroundItem(new Trap(8, 2));
+		rooms[6].addGroundItem(new Trap(10, 1));
+		rooms[6].addGroundItem(new HealObject(9, 8));
+		rooms[6].addMonster(new Goblin(3, 5));
+		rooms[6].addMonster(new Goblin(11, 4));
+		rooms[6].addMonster(new Goblin(1, 8));
+
+		int[] arrayX7 = {2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,12,12,12,12,12,12, 4, 4, 4, 4, 4, 5, 6, 7, 8, 9,10,10,10,10};
+		int[] arrayY7 = {2, 3, 4, 5, 6, 7, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 8, 7, 6, 5, 4, 4, 4, 4, 4, 4, 4, 5, 6, 7};
+		addWalls(rooms[7], arrayX7, arrayY7);
+		rooms[7].addGroundItem(new Trap(9, 7));
+		rooms[7].addGroundItem(new Trap(7, 8));
+		rooms[7].addGroundItem(new HealObject(9, 5));
+		rooms[7].addGroundItem(new HealObject(5, 8));
+		rooms[7].addMonster(new Goblin(6, 6));
+
+		int[] arrayX8 = {6, 6, 6, 6, 8, 8, 8, 8, 5, 4, 5, 4, 3, 2, 2, 2, 1, 8, 8, 7, 6, 5, 5, 9,10,11,12};
+		int[] arrayY8 = {8, 7, 6, 4, 8, 7, 6, 4, 6, 6, 4, 4, 4, 4, 5, 6, 6, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2};
+		addWalls(rooms[8], arrayX8, arrayY8);
+		rooms[8].addGroundItem(new Trap(4, 7));
+		rooms[8].addGroundItem(new Trap(2, 8));
+		rooms[8].addGroundItem(new Trap(10, 7));
+		rooms[8].addGroundItem(new Trap(10, 4));
+		rooms[8].addGroundItem(new Trap(12, 7));
+		rooms[8].addGroundItem(new Trap(12, 4));
+		rooms[8].addGroundItem(new HealObject(5, 7));
+		rooms[8].addGroundItem(new HealObject(1, 8));
+		rooms[8].addMonster(new Goblin(2, 2));
+		rooms[8].addMonster(new Skeleton(13, 2));
+
+		int[] arrayX9 = {8, 8, 8, 8, 8, 8, 8, 9,11,13,10,12, 9,11,13, 7, 6, 5, 4, 3, 2, 2, 2, 3, 4, 5, 6};
+		int[] arrayY9 = {8, 7, 6, 5, 4, 3, 2, 7, 7, 7, 5, 5, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 6, 6, 6, 6, 6};
+		addWalls(rooms[9], arrayX9, arrayY9);
+		rooms[9].addGroundItem(new Trap(6, 7));
+		rooms[9].addGroundItem(new Trap(4, 8));
+		rooms[9].addGroundItem(new Trap(2, 7));
+		rooms[9].addGroundItem(new Trap(3, 2));
+		rooms[9].addGroundItem(new Trap(6, 2));
+		rooms[9].addGroundItem(new Trap(10, 2));
+		rooms[9].addGroundItem(new Trap(12, 1));
+		rooms[9].addGroundItem(new Trap(11, 6));
+		rooms[9].addGroundItem(new Trap(13, 4));
+		rooms[9].addGroundItem(new HealObject(9, 8));
+		rooms[9].addGroundItem(new HealObject(13, 1));
+		rooms[9].addGroundItem(new Treasure(3,5));
+		rooms[9].addMonster(new Goblin(11, 5));
+		rooms[9].addMonster(new Skeleton(3, 3));
+		rooms[9].addMonster(new Skeleton(6, 3));
+	}
+
+	private void addWalls(Room room, int[] arrayX, int[] arrayY) {
+		for(int i = 0; i < arrayX.length; i++) {
+			room.addGroundItem(new Wall(arrayX[i],arrayY[i]));
+		}
 	}
 
 	private void addDoor(int idDoor, int x1, int y1, Command cmd1, Room room1, int x2, int y2, Command cmd2, Room room2) {
