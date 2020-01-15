@@ -28,7 +28,6 @@ public class PanelMenu extends JPanel {
 		Application.designMenuButton(exitButton);
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
 		setPreferredSize(new Dimension(app.windowWidth(), app.windowHeight()));
 
 
@@ -74,10 +73,8 @@ public class PanelMenu extends JPanel {
 					choices.add("Aucune sauvegarde");
 				}
 				
-				String input = (String) JOptionPane.showInputDialog(null, "Choose now...",
-				"The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, // Use
-																				// default
-																				// icon
+				String input = (String) JOptionPane.showInputDialog(null, "Charger une partie",
+				"Nom de la partie", JOptionPane.QUESTION_MESSAGE, null,
 				choices.toArray(), // Array of choices
 				choices.get(0)); // Initial choice
 

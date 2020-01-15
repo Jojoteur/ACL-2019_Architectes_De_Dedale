@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 import engine.Command;
 
 public abstract class Character {
-	protected int x, y, healthPoints, attackPoints, cooldownMove, cooldownAttack;
+	protected int x, y, healthPoints, attackPoints, cooldownMove, cooldownAttack, maxHealthPoints;
 	protected String category;
 	protected Command direction;
 	protected long lastMove, lastAttack;
@@ -18,6 +18,7 @@ public abstract class Character {
 		this.x = x;
 		this.y = y;
 		this.healthPoints = healthPoints;
+		this.maxHealthPoints = healthPoints;
 		this.attackPoints = attackPoints;
 		this.category = category;
 		this.direction = Command.DOWN;
@@ -51,6 +52,10 @@ public abstract class Character {
 	
 	public int getHealthPoints() {
 		return healthPoints;
+	}
+
+	public int getMaxHealthPoints() {
+		return maxHealthPoints;
 	}
 
 	public void setHealthPoints(int healthPoints) {

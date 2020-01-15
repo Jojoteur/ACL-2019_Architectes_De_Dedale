@@ -37,6 +37,7 @@ public class Application extends JFrame{
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		setTitle("Labyrinthe de Dédale");
+
 		int roomWidth = 15;
 		int roomHeight = 10;
 		int fieldSize = 50;
@@ -54,7 +55,7 @@ public class Application extends JFrame{
 		timer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				engine.run();
-				panelGame.setHealthPoints(game.getHero().getHealthPoints());
+
 				if (game.isFinishedVictory() || game.isFinishedDead()) {
 					timer.stop();
 					panelEndGame.refreshEndImage(game.isFinishedVictory());
@@ -62,8 +63,6 @@ public class Application extends JFrame{
 					contentPane.removeKeyListener(controller);
 					contentPane.remove(panelGame);
 					contentPane.add(panelEndGame);					
-
-
 
 					resetGame();
 					pack();
