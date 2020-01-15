@@ -10,33 +10,29 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PanelGame extends JPanel {
     private static final long serialVersionUID = 1L;
-    private JLabel healthLabel;
 
     public PanelGame(Application app) {
         super();
 		setLayout(new BorderLayout(0, 0));
 		setPreferredSize(new Dimension(app.windowWidth(), app.windowHeight()));
-
+		
 		JPanel panelCenter = new JPanel();
 		panelCenter.add(app.engine().getGui().getPanel());
 
 		JPanel panelNorth = new JPanel();
 		panelNorth.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		healthLabel = new JLabel("Health points : " + app.game().getHero().getHealthPoints());
 		panelNorth.setPreferredSize(new Dimension(app.windowWidth(), 50));
 		panelNorth.setLayout(new BoxLayout(panelNorth, BoxLayout.LINE_AXIS));
 
 		JButton pauseButton = new JButton("Pause");
 
-		panelNorth.add(healthLabel);
-		panelNorth.add(Box.createHorizontalGlue());
+		panelNorth.add(Box.createHorizontalStrut(10));
 		panelNorth.add(pauseButton);
-
+		
 		add(panelNorth, BorderLayout.NORTH);
 		add(panelCenter, BorderLayout.CENTER);
 
@@ -56,9 +52,5 @@ public class PanelGame extends JPanel {
 				app.repaint();
 			}
 		});
-    }
-
-    public void setHealthPoints(int healthPoints) {
-        healthLabel.setText("Health points : " + healthPoints);
     }
 }
