@@ -76,7 +76,6 @@ public class Room {
 
 	public void moveAndAttackMonsters(Hero hero) {
 		Hashtable<Integer,Monster> newMonsters = new Hashtable<Integer,Monster>();
-		int i = 0;
 
 		this.monsters.forEach((k, monster) -> {
 			int hashKey = hashXY(monster.getX(),monster.getY());
@@ -98,8 +97,6 @@ public class Room {
 						
 			monster.attack(null, this, hero);
 		});
-
-		this.monsters = newMonsters;
 	}
 	
 	//Methodes pour les doors
